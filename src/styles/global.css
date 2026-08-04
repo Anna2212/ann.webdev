@@ -1,0 +1,330 @@
+/* ============================================
+   annwebdev.com — глобальні стилі
+   Токени з брендбуку @ann.webdev v2 + розбір під веб
+   ============================================ */
+
+@import '@fontsource/montserrat/400.css';
+@import '@fontsource/montserrat/700.css';
+@import '@fontsource/montserrat/900.css';
+@import '@fontsource/playfair-display/400-italic.css';
+@import '@fontsource/caveat/600.css';
+
+:root {
+  /* Кольори */
+  --paper: #FBF8F3;
+  --cream: #F1E9DC;
+  --cream-dark: #E7DCC8;
+  --ink: #241C16;
+  --ink-soft: #5B4F44;
+  --terracotta: #C6673B;
+  --terracotta-deep: #A8522C;
+  --wine: #5A2A2E;
+  --sage: #6E7154;
+
+  /* Шрифти */
+  --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-hand: 'Caveat', cursive;
+
+  /* Розміри тексту — clamp між мобільною і десктопом */
+  --fs-h1: clamp(2.25rem, 1.4rem + 4.2vw, 3.75rem);
+  --fs-h2: clamp(1.75rem, 1.25rem + 2.5vw, 2.625rem);
+  --fs-h3: clamp(1.375rem, 1.2rem + 0.9vw, 1.6875rem);
+  --fs-lead: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  --fs-body: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --fs-small: clamp(0.875rem, 0.85rem + 0.15vw, 0.9375rem);
+  --fs-kicker: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+  --fs-hand: clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem);
+
+  /* Геометрія */
+  --radius-card: 14px;
+  --radius-field: 8px;
+  --radius-button: 999px;
+  --container: 1200px;
+  --pad-x: 20px;
+  --section-y: 56px;
+
+  /* Інше */
+  --line-max: 68ch;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --pad-x: 64px;
+    --section-y: 104px;
+  }
+}
+
+/* ============================================
+   Скидання і база
+   ============================================ */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+video { max-width: 100%; height: auto; display: block; }
+
+h1, h2, h3, h4 {
+  margin: 0;
+  line-height: 1.15;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); font-weight: 700; }
+h3 { font-size: var(--fs-h3); font-weight: 700; letter-spacing: 0; }
+
+p { margin: 0 0 1em; }
+p:last-child { margin-bottom: 0; }
+
+a { color: var(--terracotta-deep); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+/* Фокус — видимий завжди, це вимога доступності */
+:focus-visible {
+  outline: 2px solid var(--terracotta-deep);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ============================================
+   Типографічні класи
+   ============================================ */
+
+/* Акцентне слово в заголовку — тільки від 32px, за правилом з брендбуку */
+.accent {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--terracotta);
+  letter-spacing: 0;
+}
+
+.kicker {
+  font-size: var(--fs-kicker);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  color: var(--ink-soft);
+  max-width: var(--line-max);
+}
+
+.hand {
+  font-family: var(--font-hand);
+  font-size: var(--fs-hand);
+  font-weight: 600;
+  color: var(--terracotta);
+  line-height: 1.2;
+}
+
+.prose { max-width: var(--line-max); }
+.prose p { line-height: 1.7; }
+
+.text-soft { color: var(--ink-soft); }
+
+/* Візуально приховано, але доступно для читалок */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================
+   Розкладка
+   ============================================ */
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + var(--pad-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--pad-x);
+}
+
+.section { padding-block: var(--section-y); }
+
+.section--paper { background: var(--paper); }
+.section--cream { background: var(--cream); }
+.section--ink { background: var(--ink); color: var(--paper); }
+.section--wine { background: var(--wine); color: var(--paper); }
+
+.section--ink .kicker,
+.section--wine .kicker,
+.section--ink .lead,
+.section--wine .lead { color: var(--cream-dark); }
+
+.section--ink a,
+.section--wine a { color: var(--paper); }
+
+/* ============================================
+   Кнопки
+   ============================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 1.125rem 2.25rem;
+  border-radius: var(--radius-button);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s var(--ease), transform 0.2s var(--ease),
+              border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.btn:hover { text-decoration: none; transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+.btn--primary {
+  background: var(--terracotta-deep);
+  color: var(--paper);
+}
+.btn--primary:hover { background: #94481F; }
+
+.btn--secondary {
+  background: transparent;
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.btn--secondary:hover { background: var(--ink); color: var(--paper); }
+
+.btn--light {
+  background: var(--paper);
+  color: var(--ink);
+}
+.btn--light:hover { background: var(--cream-dark); }
+
+.btn--sm { padding: 0.75rem 1.375rem; font-size: 0.875rem; }
+
+/* Кнопка на всю ширину на мобільній */
+@media (max-width: 599px) {
+  .btn--block-mobile { width: 100%; }
+}
+
+/* ============================================
+   Картки
+   ============================================ */
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+}
+
+.section--paper .card { background: var(--cream); border-color: transparent; }
+
+@media (min-width: 768px) {
+  .card { padding: 2rem; }
+}
+
+a.card,
+.card--link {
+  display: block;
+  color: inherit;
+  transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+a.card:hover {
+  text-decoration: none;
+  border-color: var(--ink-soft);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   Нумеровані бейджі — замість системи іконок
+   ============================================ */
+
+.badge-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+}
+
+/* ============================================
+   Сітки
+   ============================================ */
+
+.grid { display: grid; gap: 1rem; }
+
+@media (min-width: 768px) {
+  .grid { gap: 1.5rem; }
+  .grid--2 { grid-template-columns: repeat(2, 1fr); }
+  .grid--3 { grid-template-columns: repeat(3, 1fr); }
+  .grid--4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .grid--4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ============================================
+   Поява при скролі
+   ============================================ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* Поважаємо системне налаштування — вимкнені анімації */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}

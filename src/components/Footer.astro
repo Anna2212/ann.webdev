@@ -1,0 +1,135 @@
+---
+import Logo from './Logo.astro';
+import { SITE, CONTACTS, NAV } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <Logo variant="light" height={32} />
+        <p class="footer__tagline">{SITE.tagline}</p>
+      </div>
+
+      <div class="footer__col">
+        <h2 class="footer__title">Написати</h2>
+        <ul class="footer__list">
+          <li><a href={CONTACTS.telegram.href}>{CONTACTS.telegram.label}</a></li>
+          <li><a href={CONTACTS.phone.href}>{CONTACTS.phone.label}</a></li>
+          <li><a href={CONTACTS.email.href}>{CONTACTS.email.label}</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h2 class="footer__title">Сторінки</h2>
+        <ul class="footer__list">
+          {NAV.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h2 class="footer__title">Читати</h2>
+        <ul class="footer__list">
+          <li>
+            <a href={CONTACTS.instagram.href} target="_blank" rel="noopener">
+              Instagram {CONTACTS.instagram.label}
+            </a>
+          </li>
+          <li>
+            <a href={CONTACTS.channel.href} target="_blank" rel="noopener">
+              {CONTACTS.channel.label}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>{SITE.legal} · {SITE.city}, працюю онлайн</p>
+      <p>
+        <a href="/privacy-policy">Політика конфіденційності</a>
+        <span aria-hidden="true"> · </span>
+        <span>© {year}</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding-block: 3.5rem 2rem;
+  }
+
+  .footer__top {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .footer__tagline {
+    margin: 1rem 0 0;
+    color: var(--cream-dark);
+    font-size: var(--fs-small);
+    max-width: 22ch;
+  }
+
+  .footer__title {
+    font-size: var(--fs-kicker);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 0.875rem;
+    /* Ink Soft на темному читається слабко — освітлюємо */
+    color: #9C8E80;
+  }
+
+  .footer__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    font-size: var(--fs-small);
+  }
+
+  .footer__list a {
+    color: var(--paper);
+  }
+
+  .footer__list a:hover {
+    color: var(--terracotta);
+    text-decoration: none;
+  }
+
+  .footer__bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgb(251 248 243 / 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: #9C8E80;
+  }
+
+  .footer__bottom p {
+    margin: 0;
+  }
+
+  .footer__bottom a {
+    color: #9C8E80;
+  }
+
+  @media (min-width: 768px) {
+    .footer__top {
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+    .footer__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+</style>

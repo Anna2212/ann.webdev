@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import { CTA } from '../data/site';
+---
+
+<Base
+  title="Анна Медвідь - конверсійні сайти й Telegram-боти для бізнесу"
+  description="Роблю сайти, які приводять заявки, а не просто висять в інтернеті. Аналіз ніші, конверсійна структура, тексти, чат-боти. 5 років у frontend-розробці."
+  path="/"
+>
+  <!-- ТИМЧАСОВО: перевірка каркаса. Повний вміст головної — наступним кроком -->
+
+  <section class="section section--paper">
+    <div class="container">
+      <p class="kicker">каркас · перевірка</p>
+      <h1 style="margin-block: 1rem 1.25rem;">
+        Сайт має приводити заявки,<br />
+        <span class="accent">а не висіти в інтернеті</span>
+      </h1>
+      <p class="lead">
+        Роблю конверсійні сайти й Telegram-боти для українського малого та
+        середнього бізнесу. Починаю не з дизайну, а з логіки: розбираю нішу,
+        конкурентів і аудиторію, будую структуру, яка веде людину до заявки.
+      </p>
+      <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-top:2rem;">
+        <a href={CTA.anchor} class="btn btn--primary">{CTA.primary}</a>
+        <a href="/keysy" class="btn btn--secondary">Подивитись кейси</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container">
+      <h2>Картки, бейджі й рукописний елемент</h2>
+      <div class="grid grid--3" style="margin-top:2rem;">
+        <div class="card">
+          <span class="badge-num">01</span>
+          <h3 style="margin-top:1rem;">Розбір</h3>
+          <p class="text-soft" style="margin-top:0.5rem;">
+            Перевірка того, як картка виглядає на кремовому фоні.
+          </p>
+        </div>
+        <div class="card">
+          <span class="badge-num">02</span>
+          <h3 style="margin-top:1rem;">Структура</h3>
+          <p class="text-soft" style="margin-top:0.5rem;">
+            Обведення, радіус і падінги з дизайн-токенів.
+          </p>
+        </div>
+        <div class="card">
+          <span class="badge-num">03</span>
+          <h3 style="margin-top:1rem;">Прототип</h3>
+          <p class="text-soft" style="margin-top:0.5rem;">
+            Ховер піднімає картку на два пікселі.
+          </p>
+        </div>
+      </div>
+      <p class="hand" style="margin-top:1.5rem;">← рукописний Caveat</p>
+    </div>
+  </section>
+
+  <section class="section section--wine" id="zayavka">
+    <div class="container">
+      <h2>Розкажіть, <span class="accent" style="color:var(--terracotta)">що у вас за задача</span></h2>
+      <p class="lead" style="margin-top:1rem;">
+        Тут буде форма. Наступний крок — компонент форми і серверна функція.
+      </p>
+      <a href="#" class="btn btn--light" style="margin-top:1.5rem;">Надіслати</a>
+    </div>
+  </section>
+</Base>

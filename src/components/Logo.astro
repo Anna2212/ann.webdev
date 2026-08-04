@@ -1,0 +1,68 @@
+---
+/**
+ * Логотип-лок-ап: знак-монограма + текст ANN.WEBDEV
+ * variant: 'dark'  — текст Ink, для світлого фону
+ *          'light' — текст Paper, для темного фону
+ * mark: true — тільки знак без тексту, для вузьких місць
+ */
+interface Props {
+  variant?: 'dark' | 'light';
+  mark?: boolean;
+  height?: number;
+  class?: string;
+}
+
+const {
+  variant = 'dark',
+  mark = false,
+  height = 34,
+  class: className = '',
+} = Astro.props;
+
+const textColor = variant === 'light' ? '#FBF8F3' : '#241C16';
+const ratio = mark ? 1 : 187 / 34;
+const width = Math.round(height * ratio);
+const viewBox = mark ? '0 0 34 34' : '0 0 187 34';
+---
+
+<svg
+  class:list={['logo', className]}
+  width={width}
+  height={height}
+  viewBox={viewBox}
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="ann.webdev — Анна Медвідь, веброзробниця"
+>
+  <rect width="34" height="34" rx="8" fill="#C6673B"></rect>
+  <text
+    x="17"
+    y="24.5"
+    text-anchor="middle"
+    font-family="'Playfair Display', Georgia, serif"
+    font-style="italic"
+    font-size="22"
+    fill="#FBF8F3">a</text
+  >
+  {
+    !mark && (
+      <text
+        x="48"
+        y="24"
+        font-family="'Montserrat', sans-serif"
+        font-weight="700"
+        font-size="17"
+        letter-spacing="1.7"
+        fill={textColor}
+      ><tspan>ANN</tspan><tspan fill="#C6673B">.</tspan><tspan>WEBDEV</tspan></text>
+    )
+  }
+</svg>
+
+<style>
+  .logo {
+    display: block;
+    height: auto;
+  }
+</style>

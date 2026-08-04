@@ -1,0 +1,43 @@
+/**
+ * Єдине джерело правди для контактів, меню й повторюваних текстів.
+ * Змінюєш тут — міняється на всьому сайті.
+ */
+
+export const SITE = {
+  url: 'https://annwebdev.com',
+  name: 'Анна Медвідь',
+  role: 'веброзробниця',
+  tagline: 'Роблю сайти, які приводять заявки',
+  city: 'Тернопіль',
+  legal: 'ФОП Медвідь Анна Михайлівна',
+  lang: 'uk',
+} as const;
+
+export const CONTACTS = {
+  telegram: { label: '@anna_medvid', href: 'https://t.me/anna_medvid' },
+  channel: {
+    label: 'Telegram-канал',
+    href: 'https://t.me/medvidanna_webdesign',
+  },
+  instagram: {
+    label: '@ann.webdev',
+    href: 'https://instagram.com/ann.webdev',
+  },
+  email: { label: 'medvidanja94@gmail.com', href: 'mailto:medvidanja94@gmail.com' },
+  phone: { label: '+380 68 593 54 56', href: 'tel:+380685935456' },
+} as const;
+
+export const NAV = [
+  { label: 'Послуги', href: '/poslugy' },
+  { label: 'Кейси', href: '/keysy' },
+  { label: 'Про мене', href: '/pro-mene' },
+  { label: 'FAQ', href: '/faq' },
+  { label: 'Контакти', href: '/kontakty' },
+] as const;
+
+/** Текст головної дії — однаковий скрізь, крім шапки */
+export const CTA = {
+  primary: 'Розібрати мій сайт безкоштовно',
+  short: 'Безкоштовний розбір',
+  anchor: '#zayavka',
+} as const;
