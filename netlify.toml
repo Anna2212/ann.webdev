@@ -6,6 +6,14 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# ТИМЧАСОВО: закриває сайт від пошуковиків, поки він на домені Netlify.
+# Прибрати цей блок разом з ALLOW_INDEXING = true у src/data/site.ts,
+# коли підключиш annwebdev.com
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
 [[headers]]
   for = "/*"
   [headers.values]

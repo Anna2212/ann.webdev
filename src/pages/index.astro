@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { CTA } from '../data/site';
+import Form from '../components/Form.astro';
 ---
 
 <Base
@@ -10,7 +11,7 @@ import { CTA } from '../data/site';
 >
   <!-- ТИМЧАСОВО: перевірка каркаса. Повний вміст головної — наступним кроком -->
 
-  <section class="section section--paper">
+  <section class="section section--paper section--hero">
     <div class="container">
       <p class="kicker">каркас · перевірка</p>
       <h1 style="margin-block: 1rem 1.25rem;">
@@ -59,13 +60,5 @@ import { CTA } from '../data/site';
     </div>
   </section>
 
-  <section class="section section--wine" id="zayavka">
-    <div class="container">
-      <h2>Розкажіть, <span class="accent" style="color:var(--terracotta)">що у вас за задача</span></h2>
-      <p class="lead" style="margin-top:1rem;">
-        Тут буде форма. Наступний крок — компонент форми і серверна функція.
-      </p>
-      <a href="#" class="btn btn--light" style="margin-top:1.5rem;">Надіслати</a>
-    </div>
-  </section>
+  <Form />
 </Base>

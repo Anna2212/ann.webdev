@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import { CONTACTS } from '../data/site';
+---
+
+<Base
+  title="Заявку отримано - Анна Медвідь"
+  description="Заявка надіслана. Відповім протягом робочого дня."
+  path="/dyakuyu"
+  noindex={true}
+>
+  <section class="section section--paper">
+    <div class="container prose">
+      <p class="kicker">заявка надіслана</p>
+      <h1 style="margin-block: 1rem 1.5rem;">
+        Отримала. <span class="accent">Напишу найближчим часом</span>
+      </h1>
+      <p class="lead">
+        Відповім протягом робочого дня на той контакт, який ви залишили. Субота
+        й неділя — вихідні, у ці дні відповідь може бути не одразу.
+      </p>
+      <p style="margin-top: 2rem;">
+        Якщо треба щось доповнити або питання термінове — напишіть напряму в
+        Telegram: <a href={CONTACTS.telegram.href}>{CONTACTS.telegram.label}</a>
+      </p>
+      <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-top:2.5rem;">
+        <a href="/keysy" class="btn btn--primary">Подивитись кейси</a>
+        <a href="/" class="btn btn--secondary">На головну</a>
+      </div>
+    </div>
+  </section>
+</Base>

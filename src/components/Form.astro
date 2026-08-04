@@ -1,0 +1,334 @@
+---
+/**
+ * Форма заявки. Ловиться Netlify Forms — атрибут data-netlify.
+ * Заявка зберігається в Netlify навіть якщо JavaScript вимкнено або
+ * серверна функція впала. Telegram і таблиця — надбудова, не єдина точка відмови.
+ */
+interface Props {
+  title?: string;
+  accent?: string;
+  lead?: string;
+  id?: string;
+}
+
+const {
+  title = 'Розкажіть,',
+  accent = 'що у вас за задача',
+  lead = 'Подивлюсь на вашу ситуацію і скажу чесно, з чого почати. Це безкоштовно і ні до чого не зобов’язує.',
+  id = 'zayavka',
+} = Astro.props;
+
+const path = Astro.url.pathname;
+---
+
+<section class="section section--wine" id={id}>
+  <div class="container form-block">
+    <div class="form-block__intro">
+      <h2>{title} <span class="accent">{accent}</span></h2>
+      <p class="lead">{lead}</p>
+      <p class="hand form-block__hand" aria-hidden="true">відповідаю в той самий день</p>
+    </div>
+
+    <div class="form-block__body">
+      <form
+        name="zayavka"
+        method="POST"
+        action="/dyakuyu"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        class="form"
+        id={`form-${id}`}
+      >
+        <input type="hidden" name="form-name" value="zayavka" />
+        <input type="hidden" name="storinka" value={path} />
+        <input type="hidden" name="dzherelo" value="" />
+
+        <p class="form__hp">
+          <label>
+            Не заповнюйте це поле
+            <input name="bot-field" tabindex="-1" autocomplete="off" />
+          </label>
+        </p>
+
+        <div class="form__row">
+          <label class="form__label" for={`${id}-name`}>Як до вас звертатись</label>
+          <input
+            class="form__input"
+            type="text"
+            id={`${id}-name`}
+            name="imya"
+            placeholder="Анна"
+            required
+            autocomplete="name"
+          />
+        </div>
+
+        <div class="form__row">
+          <label class="form__label" for={`${id}-contact`}>Куди відповісти</label>
+          <input
+            class="form__input"
+            type="text"
+            id={`${id}-contact`}
+            name="kontakt"
+            placeholder="Telegram, пошта або телефон"
+            required
+          />
+        </div>
+
+        <div class="form__row">
+          <label class="form__label" for={`${id}-site`}>
+            Сайт, якщо він є
+            <span class="form__optional">не обов’язково</span>
+          </label>
+          <input
+            class="form__input"
+            type="text"
+            id={`${id}-site`}
+            name="sayt"
+            placeholder="annwebdev.com"
+            autocomplete="url"
+          />
+        </div>
+
+        <div class="form__row">
+          <label class="form__label" for={`${id}-task`}>Що за задача</label>
+          <textarea
+            class="form__input form__input--area"
+            id={`${id}-task`}
+            name="zadacha"
+            rows="4"
+            placeholder="Коротко: чим займаєтесь і що хочете отримати"
+            required></textarea>
+        </div>
+
+        <p class="form__error" data-form-error hidden></p>
+
+        <button type="submit" class="btn btn--light btn--block-mobile form__submit">
+          Надіслати
+        </button>
+
+        <p class="form__note">
+          Відповідаю протягом робочого дня. Дані нікуди не передаю —
+          деталі в <a href="/privacy-policy">політиці конфіденційності</a>.
+        </p>
+      </form>
+
+      <div class="form__success" data-form-success hidden>
+        <p class="form__success-title">Отримала.</p>
+        <p>Напишу вам найближчим часом — на той контакт, який ви залишили.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .form-block {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .form-block__hand {
+    margin-top: 1.25rem;
+    color: var(--cream-dark);
+  }
+
+  .form-block__intro .lead {
+    margin-top: 1rem;
+  }
+
+  /* Поле-пастка для ботів. Прибрано з потоку, але не display:none —
+     частина ботів ігнорує приховані через display */
+  .form__hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .form__row {
+    margin-bottom: 1.25rem;
+  }
+
+  .form__label {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--paper);
+  }
+
+  .form__optional {
+    font-family: var(--font-hand);
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--terracotta);
+  }
+
+  .form__input {
+    width: 100%;
+    /* 16px мінімум — інакше Safari зумить сторінку при фокусі */
+    font-size: 16px;
+    font-family: var(--font-sans);
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--cream-dark);
+    border-radius: var(--radius-field);
+    padding: 0.9375rem 1rem;
+    min-height: 52px;
+    transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+  }
+
+  .form__input::placeholder {
+    color: #8B8078;
+  }
+
+  .form__input:focus {
+    outline: none;
+    border-color: var(--terracotta-deep);
+    box-shadow: 0 0 0 1px var(--terracotta-deep);
+  }
+
+  .form__input--area {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.5;
+  }
+
+  .form__input[aria-invalid='true'] {
+    border-color: var(--terracotta);
+    box-shadow: 0 0 0 1px var(--terracotta);
+  }
+
+  .form__error {
+    margin: 0 0 1rem;
+    font-size: var(--fs-small);
+    font-weight: 700;
+    color: #F0C9B4;
+  }
+
+  .form__submit[disabled] {
+    opacity: 0.65;
+    cursor: progress;
+  }
+
+  .form__note {
+    margin-top: 1.25rem;
+    font-size: 0.8125rem;
+    color: var(--cream-dark);
+    max-width: 46ch;
+  }
+
+  .form__note a {
+    color: var(--cream-dark);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .form__success {
+    background: rgb(251 248 243 / 0.08);
+    border: 1px solid rgb(251 248 243 / 0.2);
+    border-radius: var(--radius-card);
+    padding: 2rem;
+  }
+
+  .form__success-title {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .form-block {
+      grid-template-columns: 1fr 1.1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[name="zayavka"]').forEach((form) => {
+    const wrap = form.parentElement;
+    const success = wrap?.querySelector<HTMLElement>('[data-form-success]');
+    const errorBox = form.querySelector<HTMLElement>('[data-form-error]');
+    const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const source = form.querySelector<HTMLInputElement>('input[name="dzherelo"]');
+
+    // Звідки прийшла людина — щоб потім бачити, які канали дають заявки
+    if (source) source.value = document.referrer || 'напряму';
+
+    let lastSent = 0;
+
+    const showError = (text: string) => {
+      if (!errorBox) return;
+      errorBox.textContent = text;
+      errorBox.hidden = false;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (errorBox) errorBox.hidden = true;
+      form
+        .querySelectorAll('[aria-invalid]')
+        .forEach((el) => el.removeAttribute('aria-invalid'));
+
+      // Перевірка обов'язкових полів
+      const required = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
+        '[required]'
+      );
+      const empty = Array.from(required).filter((el) => !el.value.trim());
+
+      if (empty.length) {
+        empty.forEach((el) => el.setAttribute('aria-invalid', 'true'));
+        empty[0].focus();
+        showError('Заповніть, будь ласка, підсвічені поля.');
+        return;
+      }
+
+      // Захист від подвійної відправки
+      const now = Date.now();
+      if (now - lastSent < 30000) {
+        showError('Заявка вже пішла. Якщо треба доповнити — напишіть у Telegram.');
+        return;
+      }
+
+      if (submit) {
+        submit.disabled = true;
+        submit.textContent = 'Надсилаю…';
+      }
+
+      try {
+        const data = new FormData(form);
+        const body = new URLSearchParams(data as unknown as Record<string, string>);
+
+        const response = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString(),
+        });
+
+        if (!response.ok) throw new Error(String(response.status));
+
+        lastSent = now;
+        form.hidden = true;
+        if (success) {
+          success.hidden = false;
+          success.setAttribute('tabindex', '-1');
+          success.focus();
+        }
+      } catch {
+        showError(
+          'Не вдалося надіслати. Спробуйте ще раз або напишіть у Telegram @anna_medvid.'
+        );
+        if (submit) {
+          submit.disabled = false;
+          submit.textContent = 'Надіслати';
+        }
+      }
+    });
+  });
+</script>

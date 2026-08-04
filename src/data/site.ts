@@ -3,6 +3,13 @@
  * Змінюєш тут — міняється на всьому сайті.
  */
 
+/**
+ * ТИМЧАСОВО: сайт закритий від пошукових систем, поки живе на технічному
+ * домені Netlify. Коли підключиш annwebdev.com — постав true і прибери
+ * блок [[headers]] з X-Robots-Tag у netlify.toml.
+ */
+export const ALLOW_INDEXING = false;
+
 export const SITE = {
   url: 'https://annwebdev.com',
   name: 'Анна Медвідь',

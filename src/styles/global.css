@@ -178,6 +178,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .section { padding-block: var(--section-y); }
 
 .section--paper { background: var(--paper); }
+
+/* Перший екран: верхній відступ менший, бо над ним уже стоїть шапка */
+.section--hero { padding-block-start: calc(var(--section-y) * 0.55); }
 .section--cream { background: var(--cream); }
 .section--ink { background: var(--ink); color: var(--paper); }
 .section--wine { background: var(--wine); color: var(--paper); }

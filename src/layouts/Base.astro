@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE } from '../data/site';
+import { SITE, ALLOW_INDEXING } from '../data/site';
 
 interface Props {
   title: string;
@@ -38,7 +38,11 @@ const schemaList = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {
+      (noindex || !ALLOW_INDEXING) && (
+        <meta name="robots" content="noindex, nofollow" />
+      )
+    }
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="uk_UA" />
