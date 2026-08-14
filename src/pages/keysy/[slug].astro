@@ -1,0 +1,322 @@
+---
+import Base from '../../layouts/Base.astro';
+import Form from '../../components/Form.astro';
+import CaseCard from '../../components/CaseCard.astro';
+import { CASES, getNeighbours, type CaseItem } from '../../data/cases';
+import { SITE } from '../../data/site';
+
+export function getStaticPaths() {
+  return CASES.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+interface Props {
+  item: CaseItem;
+}
+
+const { item } = Astro.props;
+const path = `/keysy/${item.slug}`;
+const neighbours = getNeighbours(item.slug);
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: item.title,
+    headline: `${item.heading} ${item.headingAccent}`,
+    description: item.metaDescription,
+    url: `${SITE.url}${path}`,
+    inLanguage: 'uk',
+    author: { '@type': 'Person', name: SITE.name, url: SITE.url },
+    creator: { '@type': 'Person', name: SITE.name, url: SITE.url },
+    about: item.kicker,
+    ...(item.liveUrl ? { sameAs: item.liveUrl } : {}),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Головна', item: SITE.url },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Кейси',
+        item: `${SITE.url}/keysy`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: item.title,
+        item: `${SITE.url}${path}`,
+      },
+    ],
+  },
+];
+---
+
+<Base
+  title={item.metaTitle}
+  description={item.metaDescription}
+  path={path}
+  schema={schema}
+>
+  <!-- Шапка кейса -->
+  <section class="section section--ink case-head">
+    <div class="container">
+      <nav class="crumbs" aria-label="Навігація по сайту">
+        <a href="/keysy">Кейси</a>
+        <span aria-hidden="true">·</span>
+        <span>{item.title}</span>
+      </nav>
+
+      <p class="kicker case-head__kicker">{item.kicker}</p>
+      <h1 class="case-head__title">
+        {item.heading}<br />
+        <span class="accent">{item.headingAccent}</span>
+      </h1>
+
+      {item.note && <p class="case-head__note">{item.note}</p>}
+    </div>
+  </section>
+
+  <!-- Скрін -->
+  <section class="section section--paper case-shot">
+    <div class="container">
+      <figure class="shot">
+        <img
+          src={item.image}
+          alt={`Сайт проєкту ${item.title}`}
+          width="1200"
+          height="800"
+          fetchpriority="high"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <!-- Задача -->
+  <section class="section section--paper case-section">
+    <div class="container case-grid">
+      <h2 class="case-grid__title">Задача</h2>
+      <div class="case-grid__body prose">
+        <p>{item.task}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Що зробила -->
+  <section class="section section--cream case-section">
+    <div class="container case-grid">
+      <h2 class="case-grid__title">Що зробила</h2>
+      <div class="case-grid__body">
+        <ul class="did">
+          {item.did.map((step) => <li class="did__item">{step}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Інструменти і результат -->
+  <section class="section section--paper case-section">
+    <div class="container case-grid">
+      <h2 class="case-grid__title">Результат</h2>
+      <div class="case-grid__body prose">
+        <p class="tools">
+          <span class="kicker">Інструменти</span>
+          <span>{item.tools}</span>
+        </p>
+        <p>{item.result}</p>
+
+        {
+          item.liveUrl && (
+            <p class="live">
+              <a
+                href={item.liveUrl}
+                class="btn btn--secondary"
+                target="_blank"
+                rel="noopener"
+              >
+                Відкрити {item.liveLabel}
+              </a>
+            </p>
+          )
+        }
+
+        {item.liveNote && <p class="text-soft live-note">{item.liveNote}</p>}
+      </div>
+    </div>
+  </section>
+
+  <!-- Місток -->
+  <section class="section section--cream">
+    <div class="container">
+      <blockquote class="bridge">
+        <p>{item.bridge}</p>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- Сусідні кейси -->
+  <section class="section section--paper">
+    <div class="container">
+      <h2>Інші проєкти</h2>
+      <div class="grid grid--2 stack-top">
+        {neighbours.map((neighbour) => <CaseCard item={neighbour} variant="line" />)}
+      </div>
+    </div>
+  </section>
+
+  <Form
+    title="Потрібне щось схоже?"
+    accent="розкажіть про задачу"
+    lead="Подивлюсь на вашу ситуацію і скажу чесно, з чого почати. Це безкоштовно і ні до чого не зобов’язує."
+  />
+</Base>
+
+<style>
+  .stack-top {
+    margin-top: 2.5rem;
+  }
+
+  /* Шапка */
+  .case-head {
+    padding-block: 2.5rem 3rem;
+  }
+
+  .crumbs {
+    display: flex;
+    gap: 0.5rem;
+    font-size: var(--fs-small);
+    color: #9c8e80;
+    margin-bottom: 2rem;
+  }
+
+  .crumbs a {
+    color: #9c8e80;
+  }
+
+  .case-head__kicker {
+    color: #9c8e80;
+  }
+
+  .case-head__title {
+    margin-top: 0.875rem;
+  }
+
+  .case-head__note {
+    display: inline-block;
+    margin-top: 1.5rem;
+    background: rgb(251 248 243 / 0.12);
+    border: 1px solid rgb(251 248 243 / 0.24);
+    color: var(--cream-dark);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.5rem 0.875rem;
+    border-radius: 999px;
+  }
+
+  /* Скрін */
+  .case-shot {
+    padding-block: 2.5rem;
+  }
+
+  .shot {
+    margin: 0;
+    border: 1px solid var(--cream-dark);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: var(--cream);
+  }
+
+  .shot img {
+    width: 100%;
+    display: block;
+  }
+
+  /* Двоколонковий блок: заголовок зліва, вміст справа */
+  .case-section {
+    padding-block: calc(var(--section-y) * 0.7);
+  }
+
+  .case-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .case-grid__title {
+    font-size: var(--fs-h3);
+  }
+
+  .did {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .did__item {
+    position: relative;
+    padding-inline-start: 1.75rem;
+    line-height: 1.6;
+  }
+
+  .did__item::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0.6em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--terracotta);
+  }
+
+  .tools {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+
+  .live {
+    margin-top: 1.75rem;
+  }
+
+  .live-note {
+    font-size: var(--fs-small);
+    margin-top: 1rem;
+  }
+
+  /* Місток */
+  .bridge {
+    margin: 0;
+    max-width: 44ch;
+    border-inline-start: 3px solid var(--terracotta);
+    padding-inline-start: 1.5rem;
+    font-size: var(--fs-lead);
+    line-height: 1.55;
+  }
+
+  .bridge p {
+    margin: 0;
+  }
+
+  @media (min-width: 900px) {
+    .case-head {
+      padding-block: 3.5rem 4rem;
+    }
+    .case-grid {
+      grid-template-columns: 0.32fr 0.68fr;
+      gap: 3rem;
+    }
+    .bridge {
+      max-width: 52ch;
+      margin-inline-start: calc(0.32 * (100% - 3rem) + 3rem);
+    }
+  }
+</style>

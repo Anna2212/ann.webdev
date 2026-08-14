@@ -1,0 +1,290 @@
+---
+import Base from '../layouts/Base.astro';
+import Form from '../components/Form.astro';
+import Photo from '../components/Photo.astro';
+import Accordion from '../components/Accordion.astro';
+import { CTA, SITE } from '../data/site';
+import { SERVICES_FULL, STEPS_FULL, PRICING_STEPS, TERMS } from '../data/services';
+import { FAQ_ON_SERVICES } from '../data/faq';
+
+const title = 'Послуги - розробка сайтів і чат-ботів для бізнесу | Анна Медвідь';
+const description =
+  'Конверсійні лендінги, багатосторінкові сайти з SEO, інтернет-магазини на no-code і Telegram-боти. Аналіз ніші, структура, тексти й підтримка після запуску. Передоплата 50%.';
+
+const schema = SERVICES_FULL.map((service) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.title,
+  description: service.result,
+  serviceType: service.title,
+  areaServed: { '@type': 'Country', name: 'Україна' },
+  provider: {
+    '@type': 'Person',
+    name: SITE.name,
+    url: SITE.url,
+  },
+}));
+---
+
+<Base title={title} description={description} path="/poslugy" schema={schema}>
+  <!-- Вступ -->
+  <section class="section section--cream">
+    <div class="container intro">
+      <div>
+        <p class="kicker">послуги</p>
+        <h1 class="intro__title">Що я роблю і <span class="accent">як це влаштовано</span></h1>
+        <div class="prose intro__text">
+          <p>
+            Інструмент обираю під задачу, а не навпаки. Десь швидше й дешевше
+            зібрати на конструкторі, десь без коду не обійтись — я вмію обидва
+            варіанти, тому не змушую вас підлаштовувати задачу під платформу.
+          </p>
+          <p>
+            Але головне не в інструменті. Головне в тому, що робиться до нього:
+            розбір ніші, структура сторінки і тексти, написані під цю структуру.
+            Саме ця частина визначає, чи буде сайт приносити заявки.
+          </p>
+        </div>
+        <a href={CTA.anchor} class="btn btn--primary btn--block-mobile intro__btn">
+          {CTA.primary}
+        </a>
+      </div>
+
+      <div class="intro__media">
+        <Photo
+          name="laptop-phone"
+          alt="Ноутбук і телефон у руках за робочим столом"
+          priority={true}
+          sizes="(min-width: 900px) 36vw, 100vw"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Напрямки роботи -->
+  <section class="section section--cream services">
+    <div class="container">
+      <h2 class="reveal">Напрямки роботи</h2>
+
+      <div class="grid grid--2 stack-top">
+        {
+          SERVICES_FULL.map((service) => (
+            <article class="card service reveal" id={service.id}>
+              <h3 class="service__title">{service.title}</h3>
+
+              <p class="service__label">Для кого</p>
+              <p class="service__text">{service.forWhom}</p>
+
+              <p class="service__label">Що входить</p>
+              <p class="service__text">{service.includes}</p>
+
+              <p class="service__label">Що на виході</p>
+              <p class="service__text">{service.result}</p>
+
+              <p class="service__label">Термін</p>
+              <p class="service__text">{service.term}</p>
+
+              {service.caseSlug && (
+                <p class="service__case">
+                  <a href={`/keysy/${service.caseSlug}`}>{service.caseLabel} →</a>
+                </p>
+              )}
+            </article>
+          ))
+        }
+      </div>
+
+      <!-- Від чого залежить термін -->
+      <div class="note stack-top reveal">
+        <h3 class="note__title">Від чого залежить термін</h3>
+        <p>
+          Терміни вище — це повний цикл: від першої розмови до готового сайту,
+          разом з розбором ніші, узгодженнями й текстами. Не тільки збірка.
+        </p>
+        <p>
+          Ми вписуємося в обговорені дедлайни за однієї умови: ви вчасно
+          відповідаєте на мої питання і надаєте матеріали. Найчастіше проєкти
+          затягуються не через розробку, а через паузи на узгодженнях. Тому на
+          старті я одразу кажу, що саме мені потрібно від вас і коли — щоб ці
+          паузи не з’їли ваш власний дедлайн.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Процес -->
+  <section class="section section--paper">
+    <div class="container">
+      <h2 class="reveal">Сім кроків від першої розмови <span class="accent">до запуску</span></h2>
+      <p class="lead stack-sm reveal">
+        Ви завжди знаєте, на якому ми етапі і що буде далі.
+      </p>
+
+      <ol class="steps stack-top">
+        {
+          STEPS_FULL.map((step) => (
+            <li class="step reveal">
+              <span class="badge-num">{step.num}</span>
+              <div>
+                <h3 class="step__title">{step.title}</h3>
+                <p class="text-soft step__text">{step.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Вартість -->
+  <section class="section section--cream">
+    <div class="container">
+      <h2 class="reveal">Скільки це коштує</h2>
+      <div class="prose stack-sm">
+        <p>
+          Чесна відповідь: залежить. І це не спроба уникнути питання, а те, як
+          воно реально працює.
+        </p>
+        <p>
+          Лендінг на п’ять блоків і лендінг на п’ятнадцять — це різна робота.
+          Сайт, де тексти вже написані, і сайт, де їх треба створити з нуля, теж
+          коштують по-різному. Тому цифру на сторінці я не пишу: вона або
+          збрехала б комусь із вас, або відлякала б того, кому насправді підійшло
+          б дешевше рішення.
+        </p>
+      </div>
+
+      <ol class="pricing stack-top">
+        {
+          PRICING_STEPS.map((item) => (
+            <li class="pricing__item reveal">
+              <span class="pricing__num">{item.n}</span>
+              <p>{item.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="center-actions">
+        <a href={CTA.anchor} class="btn btn--primary btn--block-mobile">
+          Отримати пропозицію
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Умови -->
+  <section class="section section--paper">
+    <div class="container">
+      <h2 class="reveal">Умови роботи</h2>
+      <div class="grid grid--2 stack-top terms">
+        {
+          TERMS.map((term) => (
+            <div class="term reveal">
+              <h3 class="term__title">{term.title}</h3>
+              <p class="text-soft term__text">{term.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Часті питання -->
+  <section class="section section--cream">
+    <div class="container">
+      <h2 class="reveal">Часті питання</h2>
+      <div class="stack-top">
+        <Accordion items={FAQ_ON_SERVICES} />
+      </div>
+      <p class="stack-sm">
+        <a href="/faq">Усі питання і відповіді</a>
+      </p>
+    </div>
+  </section>
+
+  <Form />
+</Base>
+
+<style>
+  .stack-sm { margin-top: 1rem; }
+  .stack-top { margin-top: 2.5rem; }
+
+  .intro {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .intro__title { margin-block: 1rem 1.5rem; }
+  .intro__btn { margin-top: 2rem; }
+
+
+  /* Картки послуг стоять на кремовому — робимо їх Paper */
+  .services .card { background: var(--paper); border-color: var(--cream-dark); }
+
+  .service__title { font-size: 1.375rem; margin-bottom: 1rem; }
+
+  .service__label {
+    font-size: var(--fs-kicker);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--terracotta-deep);
+    margin: 1.125rem 0 0.375rem;
+  }
+
+  .service__text {
+    font-size: var(--fs-small);
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .service__case { margin: 1.25rem 0 0; font-size: var(--fs-small); font-weight: 700; }
+
+  .note {
+    border-inline-start: 2px solid var(--terracotta);
+    padding-inline-start: 1.25rem;
+    max-width: var(--line-max);
+  }
+
+  .note__title { font-size: 1.125rem; margin-bottom: 0.75rem; }
+  .note p { color: var(--ink-soft); font-size: var(--fs-small); line-height: 1.7; }
+
+  /* Процес */
+  .steps { display: flex; flex-direction: column; gap: 1.75rem; max-width: 760px; }
+  .step { display: flex; gap: 1rem; }
+  .step__title { font-size: 1.125rem; }
+  .step__text { margin-top: 0.375rem; font-size: var(--fs-small); }
+
+  /* Вартість */
+  .pricing {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: var(--line-max);
+  }
+
+  .pricing__item { display: flex; gap: 1rem; align-items: baseline; }
+
+  .pricing__num {
+    flex: 0 0 auto;
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--terracotta);
+    min-width: 1.25rem;
+  }
+
+  .pricing__item p { margin: 0; color: var(--ink-soft); }
+
+  .center-actions { margin-top: 2.5rem; text-align: center; }
+
+  /* Умови */
+  .term__title { font-size: 1.0625rem; }
+  .term__text { margin-top: 0.5rem; font-size: var(--fs-small); }
+
+  @media (min-width: 900px) {
+    .intro { grid-template-columns: 1.2fr 0.8fr; gap: 3.5rem; }
+  }
+</style>

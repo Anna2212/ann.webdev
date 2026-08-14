@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#FBF8F3"/>
+  <rect x="0" y="0" width="1200" height="10" fill="#C6673B"/>
+
+  <rect x="80" y="72" width="52" height="52" rx="12" fill="#C6673B"/>
+  <text x="106" y="110" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="34" fill="#FBF8F3">a</text>
+  <text x="150" y="108" font-family="Helvetica, Arial, sans-serif" font-weight="bold" font-size="24" letter-spacing="2.4" fill="#241C16">ANN<tspan fill="#C6673B">.</tspan>WEBDEV</text>
+
+  <text x="80" y="290" font-family="Helvetica, Arial, sans-serif" font-weight="bold" font-size="72" fill="#241C16">Сайт має приводити</text>
+  <text x="80" y="368" font-family="Helvetica, Arial, sans-serif" font-weight="bold" font-size="72" fill="#241C16">заявки,</text>
+  <text x="352" y="368" font-family="Georgia, serif" font-style="italic" font-size="72" fill="#C6673B">а не висіти</text>
+  <text x="80" y="446" font-family="Georgia, serif" font-style="italic" font-size="72" fill="#C6673B">в інтернеті</text>
+
+  <text x="80" y="536" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#5B4F44">Конверсійні сайти й Telegram-боти для бізнесу</text>
+  <text x="80" y="576" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#5B4F44">annwebdev.com</text>
+</svg>

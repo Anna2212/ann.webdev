@@ -1,0 +1,113 @@
+---
+import type { FaqItem } from '../data/faq';
+
+interface Props {
+  items: readonly FaqItem[];
+  /** Перше питання відкрите за замовчуванням */
+  openFirst?: boolean;
+}
+
+const { items, openFirst = true } = Astro.props;
+---
+
+<div class="faq">
+  {
+    items.map((item, index) => (
+      <details class="faq__item" open={openFirst && index === 0}>
+        <summary class="faq__q">
+          <span>{item.q}</span>
+          <svg
+            class="faq__chevron"
+            width="16"
+            height="10"
+            viewBox="0 0 16 10"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M1 1l7 7 7-7"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </summary>
+        <div class="faq__a">
+          {item.a.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  /*
+    Акордеон на <details>. Відповіді присутні в HTML одразу і ховаються
+    браузером — не підвантажуються по кліку. Це принципово:
+    інакше пошукові й AI-системи їх не побачать.
+  */
+  .faq {
+    border-top: 1px solid var(--cream-dark);
+  }
+
+  .faq__item {
+    border-bottom: 1px solid var(--cream-dark);
+  }
+
+  .faq__q {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.25rem;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.4;
+    cursor: pointer;
+    list-style: none;
+    min-height: 44px;
+  }
+
+  .faq__q::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__q:hover {
+    color: var(--terracotta-deep);
+  }
+
+  .faq__chevron {
+    flex: 0 0 auto;
+    margin-top: 0.4375rem;
+    color: var(--terracotta-deep);
+    transition: transform 0.2s var(--ease);
+  }
+
+  .faq__item[open] .faq__chevron {
+    transform: rotate(180deg);
+  }
+
+  .faq__a {
+    padding-block: 0 1.5rem;
+    max-width: var(--line-max);
+  }
+
+  .faq__a p {
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  .faq__a p + p {
+    margin-top: 0.875rem;
+  }
+
+  @media (min-width: 768px) {
+    .faq__q {
+      font-size: 1.25rem;
+      padding-block: 1.5rem;
+    }
+  }
+</style>

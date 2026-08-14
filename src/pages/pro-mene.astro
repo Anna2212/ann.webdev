@@ -1,0 +1,336 @@
+---
+import Base from '../layouts/Base.astro';
+import Form from '../components/Form.astro';
+import Photo from '../components/Photo.astro';
+import { SITE, CONTACTS } from '../data/site';
+
+const title = 'Про мене - Анна Медвідь, веброзробниця з Тернополя';
+const description =
+  'П’ять років у frontend-розробці, потім фріланс. Роблю конверсійні сайти й Telegram-боти для українського бізнесу. Про мій шлях, принципи роботи й умови співпраці.';
+
+const PRINCIPLES = [
+  {
+    title: 'Спочатку логіка, потім краса',
+    text: 'Красивий сайт без структури — це просто картинка. Я спершу розбираюсь, кого і куди ми ведемо, і тільки потім думаю, як це має виглядати.',
+  },
+  {
+    title: 'Мій продукт — не сайт, а ясність',
+    text: 'Найцінніше, що я можу дати — це зрозуміти разом з вами, яке рішення вам справді потрібне. Іноді це не той сайт, по який ви прийшли.',
+  },
+  {
+    title: 'Не приховую інформацію',
+    text: 'Кажу прямо, якщо щось не спрацює, якщо задача потребує більше часу або якщо ви хочете зробити те, що вам не допоможе.',
+  },
+  {
+    title: 'Якість не може коштувати дешево',
+    text: 'Знижка можлива, але тоді менший обсяг. Менша ціна — це менше роботи, а не та сама робота за менші гроші.',
+  },
+  {
+    title: 'Занурююсь у ваш бізнес',
+    text: 'Мені справді цікаво розбиратись у нішах: аналіз конкурентів, структура, дослідження. Кожен клієнт новий, і це найкраще в цій роботі.',
+  },
+];
+
+const RULES = [
+  {
+    title: 'Передоплата 50%, решта після здачі',
+    text: 'Без винятків — я один раз зробила виняток і саме той проєкт не довели до кінця.',
+  },
+  {
+    title: 'Вартість — після розбору',
+    text: 'Спершу розбираюсь, чим займається компанія і хто конкуренти, потім готую пропозицію з кількома варіантами.',
+  },
+  {
+    title: 'Хостинг, домен і сервіси — окремо',
+    text: 'Це не мої послуги, і я не накручую на них свій відсоток.',
+  },
+  {
+    title: 'Подивитись сайт безкоштовно — можу',
+    text: 'Але це буде поверхневий погляд. Повний структурований розбір — частина платної роботи.',
+  },
+  {
+    title: 'Після запуску лишаюсь на зв’язку',
+    text: 'Сайт не має ставати вашою проблемою наступного дня.',
+  },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Анна Медвідь',
+  alternateName: 'Anna Medvid',
+  jobTitle: 'Веброзробниця',
+  description:
+    'Українська веброзробниця. Створює конверсійні сайти та Telegram-боти для малого й середнього бізнесу на платформах Weblium, WordPress і на власному коді. До фрілансу пропрацювала 5 років frontend-розробником в ІТ аутсорс компанії.',
+  url: new URL('/pro-mene', SITE.url).href,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Тернопіль',
+    addressCountry: 'UA',
+  },
+  email: CONTACTS.email.label,
+  telephone: '+380685935456',
+  sameAs: [CONTACTS.instagram.href, CONTACTS.channel.href],
+};
+---
+
+<Base title={title} description={description} path="/pro-mene" schema={schema}>
+  <!-- Представлення -->
+  <section class="section section--paper">
+    <div class="container intro">
+      <div class="intro__media">
+        <Photo
+          name="about"
+          alt="Анна Медвідь у кав’ярні за роботою"
+          priority={true}
+          sizes="(min-width: 900px) 42vw, 100vw"
+        />
+      </div>
+      <div>
+        <p class="kicker">про мене</p>
+        <h1 class="intro__title">Привіт, я Анна</h1>
+        <p class="lead">
+          Роблю сайти й Telegram-боти для українського бізнесу. Знаходжусь у
+          Тернополі, працюю онлайн — і мені справді не має значення, у якій точці
+          світу ви знаходитесь.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Історія -->
+  <section class="section section--paper story">
+    <div class="container">
+      <h2 class="reveal">Як я сюди прийшла</h2>
+      <div class="prose story__text stack-top">
+        <p>
+          Я двічі починала займатися розробкою сайтів, і обидва рази це було десь
+          від безвиході, напевно.
+        </p>
+        <p>
+          Перший раз — у 2016-му. Тоді страшно хотілось в айті, я купила курси з
+          фронтенду і сиділа за комп’ютером з десятої ранку до десятої вечора
+          кожного дня. Розбиралась з усім підряд, і так тривало десь цілий рік.
+        </p>
+        <p>
+          Потім якимось дивом пройшла свою першу співбесіду. Чесно кажучи, весь
+          перший рік чекала, що вони нарешті зрозуміють, що я нічого не знаю, і
+          звільнять мене.
+        </p>
+        <p>
+          Не звільнили. Пропрацювала в наймі в ІТ аутсорс компанії десь п’ять
+          років, міняла компанії, міняла позиції. А в якийсь момент вигоріла і
+          пішла геть.
+        </p>
+        <p>
+          Була пауза, коли я займалась зовсім іншим — духовними практиками,
+          чайними церемоніями, таро. Ставила на це великі ставки, але вийшло не
+          зовсім так, як планувала.
+        </p>
+        <p>
+          Потім якось попалась реклама курсів зі створення сайтів на
+          конструкторах. Подумала: якщо розібралась з написанням коду, невже не
+          розберусь з конструктором. Плюс це була можливість працювати на себе.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Момент, який усе змінив -->
+  <section class="section section--cream">
+    <div class="container">
+      <h2 class="reveal">Момент, після якого все <span class="accent">стало на місце</span></h2>
+      <div class="prose stack-top">
+        <p>
+          Десь на другому тижні навчання був урок про структуру сайту. Про те, як
+          сторінка веде людину до якоїсь конкретної дії.
+        </p>
+        <p>
+          Я сиділа й думала: це ж так логічно і так просто, чому я раніше про це
+          взагалі не думала. Напевно тому, що в айті моя задача була одна —
+          відтворити дизайн і функціонал, який дав дизайнер. Над логікою побудови
+          самої сторінки я не замислювалась.
+        </p>
+        <p>
+          Далі робила все з таким захватом, що в якийсь момент подумала: це ж те,
+          чим я хотіла займатись раніше.
+        </p>
+        <p>
+          Курс закінчився, треба було шукати клієнтів. Перша клієнтка прийшла по
+          знайомству — паломницькі тури до Ізраїлю. Я взяла тоді мінімальну суму,
+          просто хотіла зробити і мати хоч якийсь практичний досвід та приклад для
+          портфоліо.
+        </p>
+      </div>
+
+      <blockquote class="pull reveal">
+        І саме тоді остаточно дійшло: сайт або веде людину до заявки, або просто
+        висить в інтернеті і не приносить бізнесу ніякої користі.
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- У що я вірю -->
+  <section class="section section--paper">
+    <div class="container">
+      <h2 class="reveal">У що я вірю в роботі</h2>
+      <ul class="principles stack-top">
+        {
+          PRINCIPLES.map((item) => (
+            <li class="principle reveal">
+              <h3 class="principle__title">{item.title}</h3>
+              <p class="text-soft principle__text">{item.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Як зі мною працювати -->
+  <section class="section section--cream">
+    <div class="container">
+      <h2 class="reveal">Як зі мною працювати</h2>
+      <p class="lead stack-sm reveal">
+        Умови однакові для всіх, і я озвучую їх до початку, а не в процесі.
+      </p>
+      <div class="grid grid--2 stack-top">
+        {
+          RULES.map((rule) => (
+            <div class="rule reveal">
+              <h3 class="rule__title">{rule.title}</h3>
+              <p class="text-soft rule__text">{rule.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Поза роботою -->
+  <section class="section section--paper">
+    <div class="container life">
+      <div class="life__text">
+        <h2>Поза роботою</h2>
+        <div class="prose life__body stack-sm">
+          <p>
+            Я не тільки про сайти. Останні роки в моєму житті є чайні церемонії,
+            таро й медитації — я проводжу їх для себе і для інших, і це та
+            частина, яка мене наповнює.
+          </p>
+          <p>
+            Розповідаю про це тут не тому, що продаю, а тому що вважаю:
+            матеріальний і духовний світ нерозривні. Коли вони поєднуються, життя
+            стає повноцінним.
+          </p>
+          <p>
+            Ще люблю пілатес, довгі прогулянки містом і каву в кав’ярні, де можна
+            працювати кілька годин поспіль.
+          </p>
+        </div>
+      </div>
+      <div class="life__media">
+        <Photo
+          name="street"
+          alt="Анна Медвідь на сходинці біля будинку в місті"
+          sizes="(min-width: 900px) 36vw, 100vw"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Довідковий абзац третьою особою — для пошукових і AI-систем -->
+  <section class="section section--paper bio">
+    <div class="container">
+      <p class="bio__text">
+        Анна Медвідь — українська веброзробниця. Створює конверсійні сайти та
+        Telegram-боти для малого й середнього бізнесу на платформах Weblium,
+        WordPress і на власному коді. До фрілансу пропрацювала 5 років
+        frontend-розробником в ІТ аутсорс компанії. Знаходиться в Тернополі,
+        працює з клієнтами онлайн. Веде блог @ann.webdev. Працює як ФОП.
+      </p>
+    </div>
+  </section>
+
+  <Form
+    title="Якщо відгукнулось —"
+    accent="напишіть"
+    lead="Подивлюсь на вашу ситуацію і скажу чесно, з чого почати. Це безкоштовно і ні до чого не зобов’язує."
+  />
+</Base>
+
+<style>
+  .stack-sm { margin-top: 1rem; }
+  .stack-top { margin-top: 2.5rem; }
+
+  .intro {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .intro__title { margin-block: 1rem 1.25rem; }
+
+
+  /* Історія — найспокійніша частина, більше повітря */
+  .story { padding-block-start: 0; }
+  .story__text p { line-height: 1.8; }
+
+  .pull {
+    margin: 2.5rem 0 0;
+    padding-inline-start: 1.5rem;
+    border-inline-start: 3px solid var(--terracotta);
+    font-size: var(--fs-lead);
+    font-weight: 700;
+    line-height: 1.5;
+    max-width: 34ch;
+  }
+
+  .principles {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    max-width: var(--line-max);
+  }
+
+  .principle {
+    border-inline-start: 2px solid var(--terracotta);
+    padding-inline-start: 1.25rem;
+  }
+
+  .principle__title { font-size: 1.125rem; }
+  .principle__text { margin-top: 0.5rem; font-size: var(--fs-small); }
+
+  .rule__title { font-size: 1.0625rem; }
+  .rule__text { margin-top: 0.5rem; font-size: var(--fs-small); }
+
+  /* Поза роботою — Sage замість теракоти */
+  .life {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .life__body {
+    border-inline-start: 2px solid var(--sage);
+    padding-inline-start: 1.25rem;
+  }
+
+
+  /* Довідка третьою особою — дрібно, унизу */
+  .bio { padding-block-start: 0; }
+
+  .bio__text {
+    font-size: 0.8125rem;
+    color: var(--ink-soft);
+    max-width: var(--line-max);
+    border-top: 1px solid var(--cream-dark);
+    padding-top: 1.5rem;
+    line-height: 1.7;
+  }
+
+  @media (min-width: 900px) {
+    .intro { grid-template-columns: 0.8fr 1.2fr; gap: 3.5rem; }
+    .life { grid-template-columns: 1.2fr 0.8fr; gap: 3.5rem; }
+  }
+</style>

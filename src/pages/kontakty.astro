@@ -1,0 +1,197 @@
+---
+import Base from '../layouts/Base.astro';
+import Form from '../components/Form.astro';
+import Photo from '../components/Photo.astro';
+import { SITE, CONTACTS } from '../data/site';
+
+const title = 'Контакти - Анна Медвідь, веброзробниця | annwebdev.com';
+const description =
+  'Напишіть у Telegram, на пошту або залиште заявку у формі. Відповідаю протягом робочого дня. Тернопіль, працюю з клієнтами онлайн.';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Контакти',
+  url: new URL('/kontakty', SITE.url).href,
+  mainEntity: {
+    '@type': 'Person',
+    name: SITE.name,
+    jobTitle: 'Веброзробниця',
+    email: CONTACTS.email.label,
+    telephone: '+380685935456',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Тернопіль',
+      addressCountry: 'UA',
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer support',
+      email: CONTACTS.email.label,
+      telephone: '+380685935456',
+      availableLanguage: ['uk'],
+    },
+    sameAs: [CONTACTS.instagram.href, CONTACTS.channel.href],
+  },
+};
+---
+
+<Base title={title} description={description} path="/kontakty" schema={schema}>
+  <section class="section section--paper">
+    <div class="container contacts">
+      <div class="contacts__media">
+        <Photo
+          name="contact"
+          alt="Портрет Анни Медвідь"
+          priority={true}
+          sizes="(min-width: 900px) 36vw, 100vw"
+        />
+      </div>
+
+      <div>
+        <p class="kicker">контакти</p>
+        <h1 class="contacts__title">Як зі мною <span class="accent">зв’язатись</span></h1>
+        <p class="lead">
+          Найзручніше — через форму нижче: так я одразу бачу, що у вас за задача,
+          і відповідаю по суті, а не питаннями. Але якщо вам звичніше написати
+          напряму — усі контакти тут.
+        </p>
+
+        <ul class="contacts__list">
+          <li>
+            <span class="contacts__label">Telegram</span>
+            <a href={CONTACTS.telegram.href} target="_blank" rel="noopener">
+              {CONTACTS.telegram.label}
+            </a>
+          </li>
+          <li>
+            <span class="contacts__label">Пошта</span>
+            <a href={CONTACTS.email.href}>{CONTACTS.email.label}</a>
+          </li>
+          <li>
+            <span class="contacts__label">Телефон</span>
+            <a href={CONTACTS.phone.href}>{CONTACTS.phone.label}</a>
+          </li>
+        </ul>
+
+        <p class="contacts__hours">
+          Відповідаю протягом робочого дня. Субота й неділя — вихідні, у ці дні
+          можу не відповісти одразу.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Form />
+
+  <!-- Де мене ще знайти -->
+  <section class="section section--cream">
+    <div class="container">
+      <h2 class="reveal">Де мене ще знайти</h2>
+      <p class="lead stack-sm reveal">
+        В Instagram показую процес роботи над реальними проєктами — без успішного
+        успіху, з помилками й висновками. У Telegram-каналі те саме, тільки
+        текстом і докладніше.
+      </p>
+      <div class="grid grid--2 stack-top">
+        <a href={CONTACTS.instagram.href} class="card social" target="_blank" rel="noopener">
+          <h3 class="social__title">Instagram</h3>
+          <p class="text-soft social__text">{CONTACTS.instagram.label}</p>
+        </a>
+        <a href={CONTACTS.channel.href} class="card social" target="_blank" rel="noopener">
+          <h3 class="social__title">Telegram-канал</h3>
+          <p class="text-soft social__text">medvidanna_webdesign</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Реквізити -->
+  <section class="section section--paper legal">
+    <div class="container">
+      <h2 class="legal__title">Хто я формально</h2>
+      <p class="legal__text">
+        {SITE.legal}. Працюю офіційно: договір, акти виконаних робіт,
+        безготівковий розрахунок.
+      </p>
+      <p class="legal__text">
+        Знаходжусь у Тернополі, працюю з клієнтами онлайн — і мені справді не має
+        значення, у якій точці світу ви знаходитесь.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .stack-sm { margin-top: 1rem; }
+  .stack-top { margin-top: 2rem; }
+
+  .contacts {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .contacts__title { margin-block: 1rem 1.25rem; }
+
+
+  .contacts__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--cream-dark);
+  }
+
+  .contacts__list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .contacts__label {
+    font-size: var(--fs-kicker);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .contacts__list a {
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  .contacts__hours {
+    margin-top: 1.5rem;
+    font-size: var(--fs-small);
+    color: var(--ink-soft);
+    max-width: 46ch;
+  }
+
+  .social__title { font-size: 1.125rem; }
+  .social__text { margin-top: 0.25rem; font-size: var(--fs-small); }
+
+  /* Реквізити — довідка, не має перетягувати увагу */
+  .legal { padding-block-start: 0; }
+
+  .legal__title {
+    font-size: 1rem;
+    font-weight: 700;
+    border-top: 1px solid var(--cream-dark);
+    padding-top: 1.5rem;
+  }
+
+  .legal__text {
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--ink-soft);
+    max-width: var(--line-max);
+    line-height: 1.7;
+  }
+
+  @media (min-width: 900px) {
+    .contacts { grid-template-columns: 0.8fr 1.2fr; gap: 3.5rem; }
+  }
+</style>

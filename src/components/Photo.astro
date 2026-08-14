@@ -1,0 +1,52 @@
+---
+/**
+ * Фото з двома розмірами під ретіну.
+ * Очікує пару файлів: name.webp (900px) і name@2x.webp (1400px).
+ */
+interface Props {
+  /** Назва без розширення, наприклад 'hero' */
+  name: string;
+  alt: string;
+  /** Перше фото на сторінці вантажимо одразу, решту — лениво */
+  priority?: boolean;
+  /** Скільки місця займає на десктопі, для правильного вибору розміру */
+  sizes?: string;
+  class?: string;
+}
+
+const {
+  name,
+  alt,
+  priority = false,
+  sizes = '(min-width: 900px) 40vw, 100vw',
+  class: className = '',
+} = Astro.props;
+
+const src = `/images/${name}.webp`;
+const src2x = `/images/${name}@2x.webp`;
+---
+
+<img
+  class:list={['photo', className]}
+  src={src}
+  srcset={`${src} 900w, ${src2x} 1400w`}
+  sizes={sizes}
+  alt={alt}
+  width="900"
+  height="1125"
+  loading={priority ? 'eager' : 'lazy'}
+  fetchpriority={priority ? 'high' : 'auto'}
+  decoding={priority ? 'sync' : 'async'}
+/>
+
+<style>
+  .photo {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius-card);
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    background: var(--cream-dark);
+  }
+</style>
