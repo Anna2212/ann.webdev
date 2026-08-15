@@ -102,10 +102,10 @@ const schema = [
       <h2 class="reveal stack-sm h--quiet">
         Найчастіше до мене приходять <span class="accent">ось з цим</span>
       </h2>
-      <div class="grid grid--2 stack-top reveal-group">
+      <div class="grid grid--2 stack-top reveal-group pain-list">
         {
           PAINS.map((item) => (
-            <article class="card pain">
+            <article class="pain">
               <span class="pain__mark" aria-hidden="true">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path
@@ -308,15 +308,23 @@ const schema = [
     margin-top: 1.25rem;
   }
 
-  /* Хрестик на картці болю */
+  /* Болі — список з лінійками, а не картки. Поруч із картками послуг
+     дві однакові сітки коробок читались як один довгий блок, до того ж
+     цей розділ допоміжний і не має важити стільки ж, скільки послуги. */
+  .pain-list {
+    row-gap: 0;
+  }
+
   .pain {
     position: relative;
+    border-block-start: 1px solid var(--cream-dark);
+    padding: 1.5rem 2.25rem 1.75rem 0;
   }
 
   .pain__mark {
     position: absolute;
-    inset-block-start: 1.25rem;
-    inset-inline-end: 1.25rem;
+    inset-block-start: 1.75rem;
+    inset-inline-end: 0.25rem;
     color: var(--terracotta);
     opacity: 0.55;
   }

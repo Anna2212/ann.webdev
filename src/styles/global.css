@@ -273,7 +273,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   padding: 1.25rem;
 }
 
-.section--paper .card { background: var(--cream); border-color: transparent; }
+/* Край потрібен і тут: cream на paper — це різниця близько 4%,
+   без бордера картка просто розчиняється у фоні секції */
+.section--paper .card { background: var(--cream); border-color: var(--cream-dark); }
 
 @media (min-width: 768px) {
   .card { padding: 2rem; }
