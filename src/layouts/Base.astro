@@ -86,22 +86,91 @@ const schemaList = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
     <Footer />
 
     <script>
-      // Поява блоків при скролі. Не чіпає тих, хто вимкнув анімації —
-      // за це відповідає prefers-reduced-motion у global.css
-      const items = document.querySelectorAll('.reveal');
-      if (items.length) {
-        const io = new IntersectionObserver(
+      // Чи просив користувач менше руху — тоді нічого не анімуємо
+      const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // --- Поява при скролі: окремі блоки і групи ---
+      const revealables = document.querySelectorAll(
+        '.reveal, .reveal-group, .reveal-lines'
+      );
+
+      if (revealables.length) {
+        if (calm) {
+          revealables.forEach((el) => el.classList.add('is-visible'));
+        } else {
+          const io = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-visible');
+                  io.unobserve(entry.target);
+                }
+              });
+            },
+            { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+          );
+          revealables.forEach((el) => io.observe(el));
+        }
+      }
+
+      // --- Таймлайн: лінія промальовується разом зі скролом ---
+      const timeline = document.querySelector<HTMLElement>('.timeline');
+
+      if (timeline && !calm) {
+        const items = Array.from(timeline.querySelectorAll('li'));
+
+        const drawLine = () => {
+          const rect = timeline.getBoundingClientRect();
+          const anchor = window.innerHeight * 0.62;
+          const passed = anchor - rect.top;
+          const progress = Math.max(0, Math.min(1, passed / rect.height));
+          timeline.style.setProperty('--progress', String(progress));
+
+          items.forEach((item) => {
+            const box = item.getBoundingClientRect();
+            item.classList.toggle('is-active', box.top < anchor);
+          });
+        };
+
+        drawLine();
+        window.addEventListener('scroll', drawLine, { passive: true });
+        window.addEventListener('resize', drawLine, { passive: true });
+      }
+
+      // --- Цифри в блоці довіри набігають один раз ---
+      const counters = document.querySelectorAll<HTMLElement>('[data-count]');
+
+      if (counters.length && !calm) {
+        const runCounter = (el: HTMLElement) => {
+          const target = Number(el.dataset.count || '0');
+          const suffix = el.dataset.suffix || '';
+          const duration = 900;
+          const start = performance.now();
+
+          const tick = (now: number) => {
+            const time = Math.min(1, (now - start) / duration);
+            // сповільнення наприкінці, щоб не смикалось
+            const eased = 1 - Math.pow(1 - time, 3);
+            el.textContent = Math.round(target * eased) + suffix;
+            if (time < 1) requestAnimationFrame(tick);
+          };
+
+          requestAnimationFrame(tick);
+        };
+
+        const counterObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                io.unobserve(entry.target);
+                runCounter(entry.target as HTMLElement);
+                counterObserver.unobserve(entry.target);
               }
             });
           },
-          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+          { threshold: 0.6 }
         );
-        items.forEach((el) => io.observe(el));
+
+        counters.forEach((el) => counterObserver.observe(el));
       }
     </script>
   </body>
