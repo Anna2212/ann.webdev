@@ -96,10 +96,10 @@ const schema = [
   </section>
 
   <!-- Блок 3. Впізнаєте свою ситуацію -->
-  <section class="section section--cream">
+  <section class="section section--cream section--tight">
     <div class="container">
       <p class="kicker kicker--line reveal">знайомі ситуації</p>
-      <h2 class="reveal stack-sm">
+      <h2 class="reveal stack-sm h--quiet">
         Найчастіше до мене приходять <span class="accent">ось з цим</span>
       </h2>
       <div class="grid grid--2 stack-top reveal-group">
@@ -129,7 +129,7 @@ const schema = [
   <section class="section section--paper">
     <div class="container">
       <p class="kicker kicker--line reveal">напрямки роботи</p>
-      <h2 class="reveal stack-sm">Що я роблю</h2>
+      <h2 class="reveal stack-sm h--quiet">Що я роблю</h2>
       <p class="lead stack-sm reveal">
         Інструмент обираю під задачу, а не навпаки. Десь швидше й дешевше зібрати
         на конструкторі, десь без коду не обійтись — я вмію обидва варіанти, тому
@@ -159,7 +159,7 @@ const schema = [
   </section>
 
   <!-- Блок 5. Як я працюю -->
-  <section class="section section--cream">
+  <section class="section section--cream section--roomy">
     <div class="container process">
       <div class="process__text">
         <p class="kicker kicker--line reveal">як влаштована робота</p>
@@ -201,10 +201,12 @@ const schema = [
   </section>
 
   <!-- Блок 6. Кейси -->
-  <section class="section section--paper">
+  <section class="section section--paper section--roomy">
     <div class="container">
       <p class="kicker kicker--line reveal">кейси</p>
-      <h2 class="reveal stack-sm">Різні ніші, <span class="accent">один підхід</span></h2>
+      <h2 class="reveal stack-sm h--lead">
+        Різні ніші, <span class="accent">один підхід</span>
+      </h2>
       <p class="lead stack-sm reveal">
         Нижче три проєкти, які найкраще показують, як це працює. Решту можна
         подивитись у повному портфоліо.
@@ -221,10 +223,12 @@ const schema = [
   </section>
 
   <!-- Блок 7. Чому мені можна довіряти -->
-  <section class="section section--cream">
+  <!-- Темна смуга посеред сторінки: єдиний злам у чергуванні paper/cream,
+       щоб око мало за що зачепитись до самої форми -->
+  <section class="section section--ink section--tight">
     <div class="container">
       <p class="kicker kicker--line reveal">точки довіри</p>
-      <h2 class="reveal stack-sm">Чому мені можна довіряти</h2>
+      <h2 class="reveal stack-sm h--quiet">Чому мені можна довіряти</h2>
       <div class="grid grid--4 stack-top reveal-group">
         {
           FACTS.map((fact) => (
@@ -396,6 +400,11 @@ const schema = [
     line-height: 1;
     color: var(--terracotta);
     margin: 0;
+  }
+
+  /* На темному базова теракота дає замалий контраст */
+  .section--ink .fact__lead {
+    color: var(--terracotta-light);
   }
 
   .fact__title {

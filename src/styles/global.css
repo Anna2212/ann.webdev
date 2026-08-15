@@ -18,6 +18,9 @@
   --ink-soft: #5B4F44;
   --terracotta: #C6673B;
   --terracotta-deep: #A8522C;
+  /* Освітлена теракота — тільки для тексту на темному фоні,
+     базова на ink дає замалий контраст */
+  --terracotta-light: #E08A57;
   --wine: #5A2A2E;
   --sage: #6E7154;
 
@@ -96,6 +99,12 @@ h1, h2, h3, h4 {
 h1 { font-size: var(--fs-h1); }
 h2 { font-size: var(--fs-h2); font-weight: 700; }
 h3 { font-size: var(--fs-h3); font-weight: 700; letter-spacing: 0; }
+
+/* Три щаблі для H2. Якщо всі заголовки однакового розміру, сторінка
+   читається як один довгий рівний список — око не бачить, що головне.
+   h--lead — опорні секції, h--quiet — допоміжні, без класу — звичайні. */
+.h--lead { font-size: clamp(2.4rem, 1.5rem + 3.6vw, 3.375rem); }
+.h--quiet { font-size: clamp(1.5rem, 1.15rem + 1.5vw, 2rem); }
 
 p { margin: 0 0 1em; }
 p:last-child { margin-bottom: 0; }
@@ -190,8 +199,17 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .section--ink .lead,
 .section--wine .lead { color: var(--cream-dark); }
 
+.section--ink .text-soft,
+.section--wine .text-soft { color: var(--cream-dark); }
+
 .section--ink a,
 .section--wine a { color: var(--paper); }
+
+/* Щільність секції. Без цього всі блоки на сторінці мають однакову
+   висоту й читаються одноманітно — ці два модифікатори задають ритм:
+   опорні секції дихають вільніше, допоміжні тримаються щільніше. */
+.section--tight { padding-block: calc(var(--section-y) * 0.72); }
+.section--roomy { padding-block: calc(var(--section-y) * 1.32); }
 
 /* ============================================
    Кнопки
