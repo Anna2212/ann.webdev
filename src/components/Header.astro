@@ -33,14 +33,17 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
       Безкоштовний розбір
     </a>
 
+    <!-- Назва в aria-label, а не окремим span: інакше він стає першим
+         дочірнім елементом і ламає :first-child у стилях хрестика.
+         Стан «відкрито/закрито» читалка бере з aria-expanded. -->
     <button
       type="button"
       class="header__burger"
       id="burger"
+      aria-label="Меню"
       aria-expanded="false"
       aria-controls="mobile-menu"
     >
-      <span class="sr-only">Відкрити меню</span>
       <span class="header__burger-line"></span>
       <span class="header__burger-line"></span>
     </button>
@@ -65,6 +68,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 <style>
   .header {
+    --header-h: 68px;
     position: sticky;
     top: 0;
     z-index: 50;
@@ -82,7 +86,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    min-height: 68px;
+    min-height: var(--header-h);
   }
 
   .header__logo {
@@ -157,10 +161,26 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     transform: translateY(-4px) rotate(-45deg);
   }
 
+  /* Панель на весь екран під шапкою: поки меню відкрите, до сторінки
+     під ним не можна ні дотягнутись кліком, ні доскролити */
   .header__mobile {
+    position: fixed;
+    inset-block-start: var(--header-h);
+    inset-inline: 0;
+    /* Висота задана явно, а не через bottom: 0. Шапка має backdrop-filter,
+       через що вона стає containing block для fixed-нащадків, і відлік
+       від низу йшов би від низу шапки, а не екрана. */
+    height: calc(100vh - var(--header-h));
+    height: calc(100dvh - var(--header-h));
+    overflow-y: auto;
+    overscroll-behavior: contain;
     border-top: 1px solid var(--cream-dark);
     padding-block: 0.75rem 1.25rem;
     background: var(--paper);
+  }
+
+  :global(body.is-menu-open) {
+    overflow: hidden;
   }
 
   .header__mobile-list {
@@ -182,8 +202,10 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
   }
 
   @media (min-width: 1024px) {
+    .header {
+      --header-h: 80px;
+    }
     .header__inner {
-      min-height: 80px;
       gap: 2rem;
     }
     .header__nav,
@@ -203,10 +225,29 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
   const menu = document.getElementById('mobile-menu');
 
   if (burger && menu) {
+    const setMenu = (open: boolean) => {
+      burger.setAttribute('aria-expanded', String(open));
+      menu.hidden = !open;
+      // блокує скрол сторінки під відкритим меню
+      document.body.classList.toggle('is-menu-open', open);
+    };
+
     burger.addEventListener('click', () => {
-      const open = burger.getAttribute('aria-expanded') === 'true';
-      burger.setAttribute('aria-expanded', String(!open));
-      menu.hidden = open;
+      setMenu(burger.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Escape закриває меню і повертає фокус на кнопку
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') {
+        setMenu(false);
+        burger.focus();
+      }
+    });
+
+    // Клік по пункту меню веде на іншу сторінку — знімаємо замок,
+    // щоб він не лишився, якщо браузер поверне сторінку з кешу
+    menu.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) setMenu(false);
     });
   }
 
