@@ -149,7 +149,27 @@ const schema = [
     </div>
   </section>
 
-  <!-- Виміряні результати -->
+  <!-- Другий етап -->
+  {
+    item.stageTwo && (
+      <section class="section section--cream case-section">
+        <div class="container case-grid">
+          <h2 class="case-grid__title">{item.stageTwo.title}</h2>
+          <div class="case-grid__body">
+            <p class="lead stage-intro">{item.stageTwo.intro}</p>
+            <ul class="did stage-did">
+              {item.stageTwo.did.map((step) => (
+                <li class="did__item">{step}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Виміряні результати. Стоять після другого етапу, бо це саме його
+       результат — перед ним читач приписував би цифри першому етапу -->
   {
     item.numbers && (
       <section class="section section--ink numbers-section">
@@ -168,25 +188,6 @@ const schema = [
             після початку просування. Абсолютні цифри не публікую — це дані
             клієнта.
           </p>
-        </div>
-      </section>
-    )
-  }
-
-  <!-- Другий етап -->
-  {
-    item.stageTwo && (
-      <section class="section section--cream case-section">
-        <div class="container case-grid">
-          <h2 class="case-grid__title">{item.stageTwo.title}</h2>
-          <div class="case-grid__body">
-            <p class="lead stage-intro">{item.stageTwo.intro}</p>
-            <ul class="did stage-did">
-              {item.stageTwo.did.map((step) => (
-                <li class="did__item">{step}</li>
-              ))}
-            </ul>
-          </div>
         </div>
       </section>
     )
