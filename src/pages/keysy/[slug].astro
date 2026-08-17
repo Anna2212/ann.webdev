@@ -149,6 +149,49 @@ const schema = [
     </div>
   </section>
 
+  <!-- Виміряні результати -->
+  {
+    item.numbers && (
+      <section class="section section--ink numbers-section">
+        <div class="container">
+          <p class="kicker kicker--line numbers-kicker">що це дало</p>
+          <div class="grid grid--4 numbers reveal-group">
+            {item.numbers.map((n) => (
+              <div class="number">
+                <p class="number__value">{n.value}</p>
+                <p class="number__label">{n.label}</p>
+              </div>
+            ))}
+          </div>
+          <p class="numbers-note">
+            Динаміка за даними Google Search Console за перші півтора місяця
+            після початку просування. Абсолютні цифри не публікую — це дані
+            клієнта.
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Другий етап -->
+  {
+    item.stageTwo && (
+      <section class="section section--cream case-section">
+        <div class="container case-grid">
+          <h2 class="case-grid__title">{item.stageTwo.title}</h2>
+          <div class="case-grid__body">
+            <p class="lead stage-intro">{item.stageTwo.intro}</p>
+            <ul class="did stage-did">
+              {item.stageTwo.did.map((step) => (
+                <li class="did__item">{step}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   <!-- Місток -->
   <section class="section section--cream">
     <div class="container">
@@ -290,6 +333,45 @@ const schema = [
   .live-note {
     font-size: var(--fs-small);
     margin-top: 1rem;
+  }
+
+  /* Виміряні результати */
+  .numbers-section {
+    padding-block: calc(var(--section-y) * 0.8);
+  }
+
+  .numbers-kicker {
+    color: #9c8e80;
+  }
+
+  .numbers {
+    margin-top: 2.5rem;
+  }
+
+  .number__value {
+    font-weight: 900;
+    font-size: clamp(2.25rem, 1.8rem + 2vw, 3rem);
+    line-height: 1;
+    color: var(--terracotta);
+    margin: 0;
+  }
+
+  .number__label {
+    margin-top: 0.625rem;
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    color: var(--cream-dark);
+  }
+
+  .numbers-note {
+    margin-top: 2.5rem;
+    font-size: 0.8125rem;
+    color: #9c8e80;
+    max-width: 52ch;
+  }
+
+  .stage-intro {
+    margin-bottom: 1.75rem;
   }
 
   /* Місток */
