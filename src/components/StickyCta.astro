@@ -1,0 +1,127 @@
+---
+/**
+ * Липка панель дій для мобільної.
+ *
+ * На телефоні кнопка в шапці прихована (вона вмикається тільки від 1024px),
+ * тому до цього на мобільній не було жодного постійного заклику до дії.
+ *
+ * Панель з'являється після першого екрана і ховається, коли на екрані вже
+ * є форма або підвал — щоб не перекривати те, до чого вона й веде.
+ */
+import { CTA, CONTACTS } from '../data/site';
+---
+
+<div class="sticky-cta" id="sticky-cta" hidden>
+  <a href={CTA.anchor} class="btn btn--primary sticky-cta__main">
+    {CTA.short}
+  </a>
+
+  <a
+    href={CONTACTS.telegram.href}
+    class="sticky-cta__tg"
+    target="_blank"
+    rel="noopener"
+    aria-label={`Написати в Telegram, ${CONTACTS.telegram.label}`}
+  >
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M21.5 4.3 2.9 11.4c-.9.3-.9 1.6.1 1.9l4.6 1.4 1.8 5.4c.2.7 1.1.9 1.6.3l2.5-2.7 4.7 3.5c.6.4 1.4.1 1.6-.6l3-14.8c.2-.9-.7-1.6-1.3-1.5Z"
+        fill="currentColor"></path>
+    </svg>
+  </a>
+</div>
+
+<style>
+  .sticky-cta {
+    position: fixed;
+    z-index: 40;
+    inset-inline: 0;
+    inset-block-end: 0;
+    display: flex;
+    gap: 0.625rem;
+    align-items: center;
+    padding: 0.75rem var(--pad-x) calc(0.75rem + env(safe-area-inset-bottom));
+    background: rgb(251 248 243 / 0.96);
+    backdrop-filter: saturate(140%) blur(6px);
+    border-block-start: 1px solid var(--cream-dark);
+    transform: translateY(100%);
+    transition: transform 0.25s var(--ease);
+  }
+
+  .sticky-cta.is-shown {
+    transform: none;
+  }
+
+  .sticky-cta__main {
+    flex: 1;
+    text-align: center;
+  }
+
+  .sticky-cta__tg {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--cream-dark);
+    color: var(--terracotta-deep);
+    background: var(--paper);
+  }
+
+  .sticky-cta__tg:hover {
+    text-decoration: none;
+    border-color: var(--terracotta-deep);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sticky-cta {
+      transition: none;
+    }
+  }
+
+  /* На десктопі кнопка вже є в шапці, дублювати не треба */
+  @media (min-width: 1024px) {
+    .sticky-cta {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const bar = document.getElementById('sticky-cta');
+
+  if (bar) {
+    // Місця, поруч з якими панель зайва: сама форма і підвал
+    const zones = [
+      document.getElementById('zayavka'),
+      document.querySelector('footer'),
+    ].filter((el): el is Element => Boolean(el));
+
+    const isOnScreen = (el: Element) => {
+      const r = el.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
+    };
+
+    const update = () => {
+      const menuOpen = document.body.classList.contains('is-menu-open');
+      const passedHero = window.scrollY > 600;
+      const nearGoal = zones.some(isOnScreen);
+      const show = passedHero && !nearGoal && !menuOpen;
+
+      bar.hidden = !show;
+      // клас додаємо наступним кадром, інакше перехід не спрацює
+      if (show) requestAnimationFrame(() => bar.classList.add('is-shown'));
+      else bar.classList.remove('is-shown');
+    };
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    // бургер міняє клас на body — панель має зникнути під відкритим меню
+    document.getElementById('burger')?.addEventListener('click', () => {
+      requestAnimationFrame(update);
+    });
+  }
+</script>

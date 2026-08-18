@@ -244,9 +244,14 @@ const schema = [
         )
       }
 
-      <p class="stack-sm">
-        <a href="/keysy">Усі проєкти</a>
-      </p>
+      <div class="after-cases">
+        <p class="stack-sm">
+          <a href="/keysy">Усі проєкти</a>
+        </p>
+        <a href={CTA.anchor} class="btn btn--primary btn--block-mobile">
+          {CTA.primary}
+        </a>
+      </div>
     </div>
   </section>
 
@@ -316,6 +321,12 @@ const schema = [
         </div>
         <p class="stack-sm">
           <a href="/pro-mene">Моя історія повністю</a>
+        </p>
+
+        <p class="about__cta">
+          <a href={CTA.anchor} class="btn btn--primary btn--block-mobile">
+            {CTA.primary}
+          </a>
         </p>
       </div>
     </div>
@@ -450,6 +461,32 @@ const schema = [
   .fact__text {
     margin-top: 0.625rem;
     font-size: var(--fs-small);
+  }
+
+  /* Врізки, які закривають довгу ділянку сторінки без жодного заклику */
+  .after-cases {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: flex-start;
+    margin-top: 2rem;
+  }
+
+  .after-cases .stack-sm {
+    margin-top: 0;
+  }
+
+  .about__cta {
+    margin-top: 1.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .after-cases {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
   }
 
   /* Виміряний результат під кейсами */
