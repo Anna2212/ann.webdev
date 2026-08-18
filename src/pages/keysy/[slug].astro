@@ -86,34 +86,30 @@ const schema = [
   <section class="section section--paper case-shot">
     <div class="container">
       {
-        item.imageBefore ? (
-          <div class="shots">
-            <figure class="shot-item">
-              <div class="shot">
-                <img
-                  src={item.imageBefore}
-                  alt={`Сайт проєкту ${item.title} до редизайну`}
-                  width="1200"
-                  height="800"
-                  fetchpriority="high"
-                />
-              </div>
-              <figcaption class="shot__cap">до</figcaption>
-            </figure>
-
-            <figure class="shot-item">
-              <div class="shot">
-                <img
-                  src={item.image}
-                  alt={`Сайт проєкту ${item.title} після редизайну`}
-                  width="1200"
-                  height="800"
-                  fetchpriority="high"
-                />
-              </div>
-              <figcaption class="shot__cap shot__cap--after">після</figcaption>
-            </figure>
-          </div>
+        item.shots ? (
+          <>
+            <div class="shots">
+              {item.shots.map((shot) => (
+                <figure class="shot-item">
+                  <div class="shot">
+                    <img
+                      src={shot.image}
+                      alt={`Сайт проєкту ${item.title} — ${shot.caption}`}
+                      width="1200"
+                      height="800"
+                      fetchpriority="high"
+                    />
+                  </div>
+                  <figcaption
+                    class:list={['shot__cap', { 'shot__cap--after': shot.accent }]}
+                  >
+                    {shot.caption}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+            {item.shotsNote && <p class="shots-note">{item.shotsNote}</p>}
+          </>
         ) : (
           <figure class="shot">
             <img
@@ -337,9 +333,17 @@ const schema = [
     color: var(--terracotta-deep);
   }
 
+  .shots-note {
+    margin-block-start: 1rem;
+    font-size: var(--fs-small);
+    color: var(--ink-soft);
+    max-width: var(--line-max);
+  }
+
+  /* auto-fit, бо скрінів може бути і два, і три */
   @media (min-width: 768px) {
     .shots {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1.25rem;
     }
   }
