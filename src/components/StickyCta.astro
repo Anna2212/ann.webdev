@@ -11,7 +11,7 @@
 import { CTA, CONTACTS } from '../data/site';
 ---
 
-<div class="sticky-cta" id="sticky-cta" hidden>
+<div class="sticky-cta" id="sticky-cta">
   <a href={CTA.anchor} class="btn btn--primary sticky-cta__main">
     {CTA.short}
   </a>
@@ -44,12 +44,17 @@ import { CTA, CONTACTS } from '../data/site';
     background: rgb(251 248 243 / 0.96);
     backdrop-filter: saturate(140%) blur(6px);
     border-block-start: 1px solid var(--cream-dark);
+    /* Ховаємо через visibility, а не через атрибут hidden: display: flex
+       перебив би hidden, і посилання лишались би у фокусі з клавіатури */
+    visibility: hidden;
     transform: translateY(100%);
-    transition: transform 0.25s var(--ease);
+    transition: transform 0.25s var(--ease), visibility 0s linear 0.25s;
   }
 
   .sticky-cta.is-shown {
+    visibility: visible;
     transform: none;
+    transition: transform 0.25s var(--ease), visibility 0s;
   }
 
   .sticky-cta__main {
@@ -110,10 +115,9 @@ import { CTA, CONTACTS } from '../data/site';
       const nearGoal = zones.some(isOnScreen);
       const show = passedHero && !nearGoal && !menuOpen;
 
-      bar.hidden = !show;
-      // клас додаємо наступним кадром, інакше перехід не спрацює
-      if (show) requestAnimationFrame(() => bar.classList.add('is-shown'));
-      else bar.classList.remove('is-shown');
+      // Один клас, без requestAnimationFrame: колбек кадру не виконується,
+      // коли вкладка у фоні, і панель тоді не з'являлась би взагалі
+      bar.classList.toggle('is-shown', show);
     };
 
     update();
