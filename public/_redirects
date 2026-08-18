@@ -1,5 +1,8 @@
 # Netlify: редіректи і правила
 
+# Кейс перейменовано: у назві бренду було DriveLive замість DriveLife
+/keysy/drivelive  /keysy/drivelife  301
+
 # Стара структура з косою рискою наприкінці
 /keysy/*/  /keysy/:splat  301
 /*/        /:splat        301

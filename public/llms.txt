@@ -42,7 +42,7 @@
 - [Сайт експерта з HR](https://annwebdev.com/keysy/hr-brand): кар'єрне консультування, власний код
 - [Квітковий магазин](https://annwebdev.com/keysy/kvitkovyy-magazyn): флористика, навчальний проєкт
 - [Редизайн The Cash](https://annwebdev.com/keysy/the-cash): маркетинг і освіта, конкурсна робота
-- [DriveLive](https://annwebdev.com/keysy/drivelive): авто і освіта, автоматизація, проєкт зупинено
+- [DriveLife](https://annwebdev.com/keysy/drivelife): авто і освіта, автоматизація, проєкт зупинено
 
 ## Контакти
 

@@ -51,8 +51,8 @@ export const SERVICES_FULL = [
     result:
       'Бот, який бере на себе те, що ви робили руками. Заявки приходять туди, де ви їх точно побачите.',
     term: 'Від 5 днів до 2 тижнів, залежно від складності сценарію.',
-    caseSlug: 'drivelive',
-    caseLabel: 'Кейс: DriveLive',
+    caseSlug: 'drivelife',
+    caseLabel: 'Кейс: DriveLife',
   },
   {
     id: 'support',
