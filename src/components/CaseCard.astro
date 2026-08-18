@@ -11,7 +11,10 @@ const { item, variant = 'card' } = Astro.props;
 const text = variant === 'card' ? item.card : item.line;
 ---
 
-<a href={`/keysy/${item.slug}`} class="case card">
+<!-- Картка більше не одне велике посилання: всередині є друге, на живий
+     сайт, а вкладати посилання в посилання не можна. Тому клікабельний
+     заголовок, а його ::after розтягнутий на всю картку. -->
+<article class="case card">
   <div class="case__media">
     <img
       src={item.image}
@@ -25,9 +28,25 @@ const text = variant === 'card' ? item.card : item.line;
 
   <div class="case__body">
     <p class="kicker">{item.kicker}</p>
-    <h3 class="case__title">{item.title}</h3>
+    <h3 class="case__title">
+      <a href={`/keysy/${item.slug}`} class="case__link">{item.title}</a>
+    </h3>
     <p class="case__text">{text}</p>
   </div>
+
+  {
+    item.liveUrl && (
+      <a
+        href={item.liveUrl}
+        class="case__live"
+        target="_blank"
+        rel="noopener"
+        aria-label={`Відкрити живий сайт проєкту ${item.title}`}
+      >
+        {item.liveLabel}
+      </a>
+    )
+  }
 
   <span class="case__arrow" aria-hidden="true">
     <svg width="20" height="14" viewBox="0 0 20 14" fill="none">
@@ -39,7 +58,7 @@ const text = variant === 'card' ? item.card : item.line;
         stroke-linejoin="round"></path>
     </svg>
   </span>
-</a>
+</article>
 
 <style>
   .case {
@@ -96,6 +115,46 @@ const text = variant === 'card' ? item.card : item.line;
     font-size: 1.375rem;
   }
 
+  .case__link {
+    color: inherit;
+  }
+
+  .case__link:hover {
+    text-decoration: none;
+    color: var(--terracotta-deep);
+  }
+
+  /* Розтягуємо зону кліку заголовка на всю картку */
+  .case__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Живе посилання має лежати над цією зоною, інакше клік по ньому
+     перехопить заголовок */
+  .case__live {
+    position: absolute;
+    z-index: 1;
+    inset-block-end: 1.25rem;
+    inset-inline-start: 1.25rem;
+    font-size: var(--fs-small);
+    font-weight: 700;
+    color: var(--ink-soft);
+    border-block-end: 1px solid var(--cream-dark);
+  }
+
+  .case__live:hover {
+    text-decoration: none;
+    color: var(--terracotta-deep);
+    border-block-end-color: var(--terracotta-deep);
+  }
+
+  /* Щоб картка реагувала і на клавіатурний фокус, не тільки на курсор */
+  .case:focus-within .case__media img {
+    transform: scale(1.05);
+  }
+
   .case__text {
     color: var(--ink-soft);
     font-size: var(--fs-small);
@@ -115,9 +174,18 @@ const text = variant === 'card' ? item.card : item.line;
     transform: translateX(4px);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .case:focus-within .case__media img { transform: none; }
+  }
+
   @media (min-width: 768px) {
     .case__body {
       padding: 1.5rem 1.5rem 3.5rem;
+    }
+
+    .case__live {
+      inset-block-end: 1.5rem;
+      inset-inline-start: 1.5rem;
     }
   }
 </style>

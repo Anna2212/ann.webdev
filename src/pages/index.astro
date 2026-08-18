@@ -5,7 +5,14 @@ import CaseCard from '../components/CaseCard.astro';
 import Photo from '../components/Photo.astro';
 import { CTA, SITE, CONTACTS } from '../data/site';
 import { PAINS, SERVICES, STEPS, FACTS } from '../data/home';
-import { FEATURED_CASES } from '../data/cases';
+import { CASES, FEATURED_CASES } from '../data/cases';
+
+/**
+ * Єдиний виміряний результат тягнемо з даних кейса, а не дублюємо текстом.
+ * До цього він жив тільки на сторінці MPORTO, куди доходять одиниці.
+ */
+const mporto = CASES.find((item) => item.slug === 'mporto');
+const proof = mporto?.numbers?.slice(0, 2) ?? [];
 
 const title = 'Анна Медвідь - конверсійні сайти й Telegram-боти для бізнесу';
 const description =
@@ -216,6 +223,27 @@ const schema = [
         {FEATURED_CASES.map((item) => <CaseCard item={item} />)}
       </div>
 
+      {
+        proof.length > 0 && (
+          <div class="proof reveal">
+            <p class="kicker">виміряний результат</p>
+            <div class="proof__nums">
+              {proof.map((n) => (
+                <p class="proof__item">
+                  <span class="proof__value">{n.value}</span>
+                  <span class="proof__label">{n.label}</span>
+                </p>
+              ))}
+            </div>
+            <p class="proof__note text-soft">
+              Дані Google Search Console по кейсу <a href="/keysy/mporto">MPORTO</a>{' '}
+              за перші півтора місяця просування. Абсолютні цифри не публікую —
+              це дані клієнта.
+            </p>
+          </div>
+        )
+      }
+
       <p class="stack-sm">
         <a href="/keysy">Усі проєкти</a>
       </p>
@@ -422,6 +450,54 @@ const schema = [
   .fact__text {
     margin-top: 0.625rem;
     font-size: var(--fs-small);
+  }
+
+  /* Виміряний результат під кейсами */
+  .proof {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    background: var(--cream);
+    border: 1px solid var(--cream-dark);
+    border-radius: var(--radius-card);
+  }
+
+  .proof__nums {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .proof__item {
+    margin: 0;
+  }
+
+  .proof__value {
+    display: block;
+    font-weight: 900;
+    font-size: 2.25rem;
+    line-height: 1;
+    color: var(--terracotta);
+  }
+
+  .proof__label {
+    display: block;
+    margin-top: 0.375rem;
+    font-size: var(--fs-small);
+  }
+
+  .proof__note {
+    margin-top: 1.25rem;
+    font-size: var(--fs-small);
+  }
+
+  @media (min-width: 768px) {
+    .proof {
+      padding: 2rem;
+    }
+    .proof__nums {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+    }
   }
 
   /* Коротко про мене */
