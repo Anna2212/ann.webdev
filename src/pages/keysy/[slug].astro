@@ -152,10 +152,14 @@ const schema = [
     <div class="container case-grid">
       <h2 class="case-grid__title">Результат</h2>
       <div class="case-grid__body prose">
-        <p class="tools">
-          <span class="kicker">Інструменти</span>
-          <span>{item.tools}</span>
-        </p>
+        {
+          item.tools && (
+            <p class="tools">
+              <span class="kicker">Інструменти</span>
+              <span>{item.tools}</span>
+            </p>
+          )
+        }
         <p>{item.result}</p>
 
         {
