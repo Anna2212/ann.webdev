@@ -81,18 +81,51 @@ const schema = [
     </div>
   </section>
 
-  <!-- Скрін -->
+  <!-- Скрін. Для редизайнів — пара «до і після», щоб різницю було видно,
+       а не тільки описано словами -->
   <section class="section section--paper case-shot">
     <div class="container">
-      <figure class="shot">
-        <img
-          src={item.image}
-          alt={`Сайт проєкту ${item.title}`}
-          width="1200"
-          height="800"
-          fetchpriority="high"
-        />
-      </figure>
+      {
+        item.imageBefore ? (
+          <div class="shots">
+            <figure class="shot-item">
+              <div class="shot">
+                <img
+                  src={item.imageBefore}
+                  alt={`Сайт проєкту ${item.title} до редизайну`}
+                  width="1200"
+                  height="800"
+                  fetchpriority="high"
+                />
+              </div>
+              <figcaption class="shot__cap">до</figcaption>
+            </figure>
+
+            <figure class="shot-item">
+              <div class="shot">
+                <img
+                  src={item.image}
+                  alt={`Сайт проєкту ${item.title} після редизайну`}
+                  width="1200"
+                  height="800"
+                  fetchpriority="high"
+                />
+              </div>
+              <figcaption class="shot__cap shot__cap--after">після</figcaption>
+            </figure>
+          </div>
+        ) : (
+          <figure class="shot">
+            <img
+              src={item.image}
+              alt={`Сайт проєкту ${item.title}`}
+              width="1200"
+              height="800"
+              fetchpriority="high"
+            />
+          </figure>
+        )
+      }
     </div>
   </section>
 
@@ -279,6 +312,36 @@ const schema = [
   .shot img {
     width: 100%;
     display: block;
+  }
+
+  /* Пара «до і після» */
+  .shots {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .shot-item {
+    margin: 0;
+  }
+
+  .shot__cap {
+    margin-block-start: 0.625rem;
+    font-size: var(--fs-kicker);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .shot__cap--after {
+    color: var(--terracotta-deep);
+  }
+
+  @media (min-width: 768px) {
+    .shots {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
   }
 
   /* Двоколонковий блок: заголовок зліва, вміст справа */

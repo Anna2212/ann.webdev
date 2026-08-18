@@ -11,6 +11,8 @@ export interface CaseItem {
   /** Короткий рядок для сторінки-списку */
   line: string;
   image: string;
+  /** Для кейсів-редизайнів: вихідна версія, показуємо парою «до і після» */
+  imageBefore?: string;
   /** Чесна позначка: навчальний, конкурсний, зупинений */
   note?: string;
   featured?: boolean;
@@ -197,6 +199,7 @@ export const CASES: CaseItem[] = [
     card: 'Прибрала зайвий текст і візуальний шум, перебудувала сторінку навколо запису на курс.',
     line: 'Прибрала візуальний шум і перебудувала сторінку навколо запису на курс',
     image: '/images/case-thecash.webp',
+    imageBefore: '/images/case-thecash-before.webp',
     note: 'конкурсна робота',
     metaTitle: 'Редизайн лендінгу онлайн-інтенсиву | кейс Анни Медвідь',
     metaDescription:
