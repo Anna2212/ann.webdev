@@ -1,0 +1,148 @@
+---
+/**
+ * Банер згоди + завантажувач GA4.
+ *
+ * Принцип: до згоди скрипт Google не вантажиться взагалі. Не «вантажиться,
+ * але без cookie», а не вантажиться — тому до вибору користувача жодні дані
+ * нікуди не йдуть, і політику конфіденційності можна написати чесно.
+ *
+ * Якщо GA_ID порожній, компонент не рендериться: немає аналітики — немає
+ * і приводу питати згоду.
+ */
+import { GA_ID } from '../data/site';
+---
+
+{
+  GA_ID && (
+    <div
+      class="consent"
+      id="consent"
+      role="dialog"
+      aria-labelledby="consent-text"
+      hidden
+    >
+      <p class="consent__text" id="consent-text">
+        Я збираю знеособлену статистику відвідувань, щоб розуміти, які сторінки
+        читають. Це можна не дозволяти — сайт працюватиме так само.{' '}
+        <a href="/privacy-policy">Політика конфіденційності</a>
+      </p>
+
+      <div class="consent__actions">
+        <button type="button" class="btn btn--primary btn--sm" data-consent="granted">
+          Дозволити
+        </button>
+        <button type="button" class="btn btn--sm consent__decline" data-consent="denied">
+          Тільки необхідне
+        </button>
+      </div>
+    </div>
+  )
+}
+
+{GA_ID && <script is:inline define:vars={{ GA_ID }}>
+  (() => {
+    const KEY = 'annwebdev-consent';
+    const banner = document.getElementById('consent');
+
+    const loadGa = () => {
+      if (window.__gaLoaded) return;
+      window.__gaLoaded = true;
+
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      document.head.appendChild(s);
+
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', GA_ID);
+    };
+
+    const saved = localStorage.getItem(KEY);
+
+    if (saved === 'granted') {
+      loadGa();
+    } else if (saved !== 'denied' && banner) {
+      banner.hidden = false;
+      document.body.classList.add('has-consent');
+    }
+
+    banner?.addEventListener('click', (event) => {
+      const btn = event.target.closest('[data-consent]');
+      if (!btn) return;
+
+      const choice = btn.dataset.consent;
+      localStorage.setItem(KEY, choice);
+      banner.hidden = true;
+      document.body.classList.remove('has-consent');
+      if (choice === 'granted') loadGa();
+    });
+  })();
+</script>}
+
+<style>
+  .consent {
+    position: fixed;
+    z-index: 60;
+    inset-inline: 0;
+    inset-block-end: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem var(--pad-x) calc(1.25rem + env(safe-area-inset-bottom));
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .consent[hidden] {
+    display: none;
+  }
+
+  .consent__text {
+    margin: 0;
+    font-size: var(--fs-small);
+    line-height: 1.6;
+    color: var(--cream-dark);
+    max-width: var(--line-max);
+  }
+
+  .consent__text a {
+    color: var(--paper);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .consent__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+  }
+
+  /* Своя кнопка відмови: btn--secondary розрахована на світлий фон і на
+     темному банері була майже невидима. Відмова має читатись не гірше
+     за згоду, інакше це темний патерн. */
+  .consent__decline {
+    background: transparent;
+    border-color: var(--cream-dark);
+    color: var(--paper);
+  }
+
+  .consent__decline:hover {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  @media (min-width: 768px) {
+    .consent {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .consent__actions {
+      flex: 0 0 auto;
+    }
+  }
+</style>

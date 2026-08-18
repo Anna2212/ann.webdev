@@ -111,9 +111,11 @@ import { CTA, CONTACTS } from '../data/site';
 
     const update = () => {
       const menuOpen = document.body.classList.contains('is-menu-open');
+      // поки внизу висить банер згоди, панель туди не лізе
+      const consentOpen = document.body.classList.contains('has-consent');
       const passedHero = window.scrollY > 600;
       const nearGoal = zones.some(isOnScreen);
-      const show = passedHero && !nearGoal && !menuOpen;
+      const show = passedHero && !nearGoal && !menuOpen && !consentOpen;
 
       // Один клас, без requestAnimationFrame: колбек кадру не виконується,
       // коли вкладка у фоні, і панель тоді не з'являлась би взагалі
@@ -123,9 +125,8 @@ import { CTA, CONTACTS } from '../data/site';
     update();
     window.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update, { passive: true });
-    // бургер міняє клас на body — панель має зникнути під відкритим меню
-    document.getElementById('burger')?.addEventListener('click', () => {
-      requestAnimationFrame(update);
-    });
+    // бургер і банер згоди міняють класи на body — панель має зреагувати
+    document.getElementById('burger')?.addEventListener('click', update);
+    document.getElementById('consent')?.addEventListener('click', update);
   }
 </script>
