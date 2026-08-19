@@ -91,14 +91,17 @@ const path = Astro.url.pathname;
         </div>
 
         <div class="form__row">
-          <label class="form__label" for={`${id}-task`}>Що за задача</label>
+          <label class="form__label" for={`${id}-task`}>
+            Що за задача
+            <span class="form__optional">не обов’язково</span>
+          </label>
           <textarea
             class="form__input form__input--area"
             id={`${id}-task`}
             name="zadacha"
-            rows="4"
+            rows="3"
             placeholder="Коротко: чим займаєтесь і що хочете отримати"
-            required></textarea>
+          ></textarea>
         </div>
 
         <p class="form__error" data-form-error hidden></p>
