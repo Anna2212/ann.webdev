@@ -70,6 +70,23 @@ const schemaList = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 
     <link rel="sitemap" href="/sitemap.xml" />
 
+    {/*
+      Блоки з появою при скролі стартують з opacity: 0, а показує їх
+      JavaScript. Без нього сторінка лишилась би порожньою нижче першого
+      екрана — не «без анімації», а зовсім без тексту. Тут показуємо все
+      одразу. З увімкненим JS браузер цей тег навіть не читає.
+    */}
+    <noscript>
+      <style>
+        .reveal,
+        .reveal-group > *,
+        .reveal-lines .line {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      </style>
+    </noscript>
+
     {
       schemaList.map((item) => (
         <script
