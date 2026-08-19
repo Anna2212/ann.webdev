@@ -1,0 +1,150 @@
+---
+/**
+ * Вікно на вихід — єдиний попап, який тут доречний.
+ *
+ * Свідомі обмеження:
+ * — тільки десктоп: на мобільній «намір піти» технічно не визначається,
+ *   а Google карає за нав'язливі перекриття на телефонах;
+ * — тільки один раз на відвідувача, вибір запам'ятовується;
+ * — не за таймером: сайт побудований на «я не тисну», і вікно, що
+ *   вистрибує саме по собі, суперечило б цьому;
+ * — пропонує чекліст, а не «залиште заявку»: людина вже йде, просити
+ *   більшого немає сенсу.
+ *
+ * Без BOT_URL не рендериться взагалі.
+ */
+import { BOT_URL } from '../data/site';
+---
+
+{
+  BOT_URL && (
+    <dialog class="exit" id="exit-intent" aria-labelledby="exit-title">
+      <button
+        type="button"
+        class="exit__close"
+        id="exit-close"
+        aria-label="Закрити"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path
+            d="M2 2l12 12M14 2L2 14"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+
+      <p class="kicker">на дорогу</p>
+      <h2 class="exit__title h--quiet" id="exit-title">
+        Заберіть чекліст, поки не пішли
+      </h2>
+      <p class="exit__text text-soft">
+        Десять причин, через які сайт не приносить заявок. Ті самі, які я
+        найчастіше знаходжу на розборах — перевірите свій сайт самі, без мене.
+      </p>
+
+      <a
+        href={BOT_URL}
+        class="btn btn--primary exit__cta"
+        target="_blank"
+        rel="noopener"
+        id="exit-cta"
+      >
+        Забрати чекліст
+      </a>
+    </dialog>
+  )
+}
+
+<style>
+  .exit {
+    max-width: 30rem;
+    padding: 2rem;
+    border: 1px solid var(--cream-dark);
+    border-radius: var(--radius-card);
+    background: var(--paper);
+    color: var(--ink);
+    position: relative;
+  }
+
+  .exit::backdrop {
+    background: rgb(36 28 22 / 0.55);
+  }
+
+  .exit__close {
+    position: absolute;
+    inset-block-start: 0.875rem;
+    inset-inline-end: 0.875rem;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  .exit__close:hover {
+    background: var(--cream);
+    color: var(--ink);
+  }
+
+  .exit__title {
+    margin-block: 0.75rem 0.875rem;
+  }
+
+  .exit__text {
+    margin: 0;
+    font-size: var(--fs-small);
+    line-height: 1.6;
+  }
+
+  .exit__cta {
+    margin-top: 1.5rem;
+  }
+
+  /* На мобільній не показуємо взагалі */
+  @media (max-width: 1023px) {
+    .exit {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  const modal = document.getElementById('exit-intent') as HTMLDialogElement | null;
+
+  if (modal && window.matchMedia('(min-width: 1024px)').matches) {
+    const KEY = 'annwebdev-exit';
+    const shown = () => localStorage.getItem(KEY) === 'yes';
+
+    const close = () => {
+      if (modal.open) modal.close();
+    };
+
+    const open = () => {
+      // не заважаємо банеру згоди і не показуємо двічі
+      if (shown() || modal.open) return;
+      if (document.body.classList.contains('has-consent')) return;
+      localStorage.setItem(KEY, 'yes');
+      modal.showModal();
+    };
+
+    // Намір піти: курсор виходить за верхню межу вікна
+    const onLeave = (event: MouseEvent) => {
+      if (event.clientY <= 0) open();
+    };
+
+    // Не чіпаємо перші секунди, щоб не спрацювало на випадковий рух
+    window.setTimeout(() => {
+      document.addEventListener('mouseout', onLeave);
+    }, 8000);
+
+    document.getElementById('exit-close')?.addEventListener('click', close);
+    document.getElementById('exit-cta')?.addEventListener('click', close);
+  }
+</script>
