@@ -70,9 +70,15 @@ const path = Astro.url.pathname;
             type="text"
             id={`${id}-contact`}
             name="kontakt"
-            placeholder="Telegram, пошта або телефон"
+            placeholder="+380 67 123 45 67 або @nickname"
             required
+            aria-describedby={`${id}-contact-hint`}
           />
+          <!-- Без підказки люди лишали щось, за чим їх не знайти -->
+          <p class="form__hint" id={`${id}-contact-hint`}>
+            Номер телефону, @нік у Telegram чи Instagram або пошта — головне,
+            щоб я змогла вас знайти.
+          </p>
         </div>
 
         <!-- Необовʼязкові поля згорнуті: разом вони займали 41% висоти
@@ -195,6 +201,13 @@ const path = Astro.url.pathname;
     outline: none;
     border-color: var(--terracotta-deep);
     box-shadow: 0 0 0 1px var(--terracotta-deep);
+  }
+
+  .form__hint {
+    margin: 0.5rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--cream-dark);
   }
 
   .form__input--area {
