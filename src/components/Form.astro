@@ -75,34 +75,37 @@ const path = Astro.url.pathname;
           />
         </div>
 
-        <div class="form__row">
-          <label class="form__label" for={`${id}-site`}>
-            Сайт, якщо він є
-            <span class="form__optional">не обов’язково</span>
-          </label>
-          <input
-            class="form__input"
-            type="text"
-            id={`${id}-site`}
-            name="sayt"
-            placeholder="annwebdev.com"
-            autocomplete="url"
-          />
-        </div>
+        <!-- Необовʼязкові поля згорнуті: разом вони займали 41% висоти
+             форми, і чотири поля відлякували більше, ніж два. Дані ті
+             самі, просто не всі одразу. details працює без JavaScript. -->
+        <details class="form__more">
+          <summary class="form__more-toggle">
+            Додати деталі — сайт і задача
+          </summary>
 
-        <div class="form__row">
-          <label class="form__label" for={`${id}-task`}>
-            Що за задача
-            <span class="form__optional">не обов’язково</span>
-          </label>
-          <textarea
-            class="form__input form__input--area"
-            id={`${id}-task`}
-            name="zadacha"
-            rows="3"
-            placeholder="Коротко: чим займаєтесь і що хочете отримати"
-          ></textarea>
-        </div>
+          <div class="form__row form__row--first">
+            <label class="form__label" for={`${id}-site`}>Сайт, якщо він є</label>
+            <input
+              class="form__input"
+              type="text"
+              id={`${id}-site`}
+              name="sayt"
+              placeholder="annwebdev.com"
+              autocomplete="url"
+            />
+          </div>
+
+          <div class="form__row">
+            <label class="form__label" for={`${id}-task`}>Що за задача</label>
+            <textarea
+              class="form__input form__input--area"
+              id={`${id}-task`}
+              name="zadacha"
+              rows="3"
+              placeholder="Коротко: чим займаєтесь і що хочете отримати"
+            ></textarea>
+          </div>
+        </details>
 
         <p class="form__error" data-form-error hidden></p>
 
@@ -196,8 +199,52 @@ const path = Astro.url.pathname;
 
   .form__input--area {
     resize: vertical;
-    min-height: 120px;
+    min-height: 104px;
     line-height: 1.5;
+  }
+
+  /* Розкривачка з необовʼязковими полями */
+  .form__more {
+    margin-bottom: 1.25rem;
+  }
+
+  .form__more-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--cream-dark);
+    list-style: none;
+    padding-block: 0.25rem;
+  }
+
+  .form__more-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  /* власна стрілка, щоб не залежати від типової мітки браузера */
+  .form__more-toggle::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-inline-end: 2px solid currentColor;
+    border-block-end: 2px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform 0.2s var(--ease);
+  }
+
+  .form__more[open] .form__more-toggle::before {
+    transform: rotate(45deg);
+  }
+
+  .form__more-toggle:hover {
+    color: var(--paper);
+  }
+
+  .form__row--first {
+    margin-top: 1rem;
   }
 
   .form__input[aria-invalid='true'] {
