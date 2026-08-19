@@ -174,7 +174,8 @@ const schema = {
   .social__text { margin-top: 0.25rem; font-size: var(--fs-small); }
 
   /* Реквізити — довідка, не має перетягувати увагу */
-  .legal { padding-block-start: 0; }
+  /* Те саме: після зміни фону нуль зверху перетворював секцію на
+     смугу, що починається впритул до тексту. */
 
   .legal__title {
     font-size: 1rem;
