@@ -1,0 +1,65 @@
+---
+/**
+ * Другий сценарій конверсії — для тих, хто дочитав, але ще не готовий
+ * говорити. Замість форми пропонуємо чекліст, який віддає Telegram-бот.
+ *
+ * Якщо BOT_URL порожній, блок не рендериться: краще нічого, ніж кнопка
+ * в нікуди.
+ */
+import { BOT_URL } from '../data/site';
+---
+
+{
+  BOT_URL && (
+    <section class="section section--cream section--tight lead-magnet">
+      <div class="container lead-magnet__inner">
+        <div class="lead-magnet__text">
+          <p class="kicker kicker--line reveal">якщо ще не на часі</p>
+          <h2 class="reveal stack-sm h--quiet">
+            Заберіть чекліст і перевірте сайт <span class="accent">самі</span>
+          </h2>
+          <p class="lead reveal">
+            Десять причин, через які сайт не приносить заявок — ті самі, які я
+            найчастіше знаходжу на розборах. Пройдіться по списку, і половину
+            проблем побачите без мене.
+          </p>
+        </div>
+
+        <div class="lead-magnet__action reveal">
+          <a
+            href={BOT_URL}
+            class="btn btn--primary btn--block-mobile"
+            target="_blank"
+            rel="noopener"
+          >
+            Забрати чекліст
+          </a>
+          <p class="lead-magnet__note text-soft">
+            Відкриється Telegram — бот віддасть чекліст одразу. Без пошти й
+            реєстрації.
+          </p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .lead-magnet__inner {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .lead-magnet__note {
+    margin-top: 0.875rem;
+    font-size: var(--fs-small);
+  }
+
+  @media (min-width: 900px) {
+    .lead-magnet__inner {
+      grid-template-columns: 1.4fr 0.6fr;
+      gap: 3.5rem;
+    }
+  }
+</style>
