@@ -27,8 +27,9 @@ const schema = SERVICES_FULL.map((service) => ({
 ---
 
 <Base title={title} description={description} path="/poslugy" schema={schema}>
-  <!-- Вступ -->
-  <section class="section section--cream">
+  <!-- Вступ. Paper, а не cream: далі одразу йшла ще одна кремова секція,
+       і разом вони читались як один блок на два з половиною екрани -->
+  <section class="section section--paper section--hero">
     <div class="container intro">
       <div>
         <p class="kicker">послуги</p>
@@ -113,7 +114,7 @@ const schema = SERVICES_FULL.map((service) => ({
   </section>
 
   <!-- Процес -->
-  <section class="section section--paper">
+  <section class="section section--paper section--roomy">
     <div class="container">
       <h2 class="reveal">Сім кроків від першої розмови <span class="accent">до запуску</span></h2>
       <p class="lead stack-sm reveal">
@@ -137,9 +138,11 @@ const schema = SERVICES_FULL.map((service) => ({
   </section>
 
   <!-- Вартість -->
-  <section class="section section--cream">
+  <!-- Темна смуга на найгарячішому блоці сторінки: тут людина
+       вирішує, писати чи ні -->
+  <section class="section section--ink">
     <div class="container">
-      <h2 class="reveal">Скільки це коштує</h2>
+      <h2 class="reveal h--lead">Скільки це коштує</h2>
       <div class="prose stack-sm">
         <p>
           Чесна відповідь: залежить. І це не спроба уникнути питання, а те, як
@@ -174,9 +177,9 @@ const schema = SERVICES_FULL.map((service) => ({
   </section>
 
   <!-- Умови -->
-  <section class="section section--paper">
+  <section class="section section--paper section--tight">
     <div class="container">
-      <h2 class="reveal">Умови роботи</h2>
+      <h2 class="reveal h--quiet">Умови роботи</h2>
       <div class="grid grid--2 stack-top terms">
         {
           TERMS.map((term) => (
@@ -191,9 +194,9 @@ const schema = SERVICES_FULL.map((service) => ({
   </section>
 
   <!-- Часті питання -->
-  <section class="section section--cream">
+  <section class="section section--cream section--tight">
     <div class="container">
-      <h2 class="reveal">Часті питання</h2>
+      <h2 class="reveal h--quiet">Часті питання</h2>
       <div class="stack-top">
         <Accordion items={FAQ_ON_SERVICES} />
       </div>
@@ -277,6 +280,10 @@ const schema = SERVICES_FULL.map((service) => ({
   }
 
   .pricing__item p { margin: 0; color: var(--ink-soft); }
+
+  /* Блок ціни став темним — текст і цифри треба перевести під нього */
+  .section--ink .pricing__item p { color: var(--cream-dark); }
+  .section--ink .pricing__num { color: var(--terracotta-light); }
 
   .center-actions { margin-top: 2.5rem; text-align: center; }
 
