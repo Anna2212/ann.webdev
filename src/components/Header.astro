@@ -1,6 +1,6 @@
 ---
 import Logo from './Logo.astro';
-import { NAV } from '../data/site';
+import { NAV, CTA } from '../data/site';
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
@@ -29,8 +29,8 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
       </ul>
     </nav>
 
-    <a href="/#zayavka" class="btn btn--primary btn--sm header__cta">
-      Безкоштовний розбір
+    <a href={`/${CTA.anchor}`} class="btn btn--primary btn--sm header__cta">
+      {CTA.short}
     </a>
 
     <!-- Назва в aria-label, а не окремим span: інакше він стає першим
