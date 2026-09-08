@@ -13,7 +13,7 @@ export const ALLOW_INDEXING = false;
 export const SITE = {
   url: 'https://annwebdev.com',
   name: 'Анна Медвідь',
-  role: 'веброзробниця',
+  role: 'сайти для бізнесу',
   tagline: 'Роблю сайти, які приводять заявки',
   city: 'Тернопіль',
   legal: 'ФОП Медвідь Анна Михайлівна',
