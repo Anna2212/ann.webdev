@@ -9,7 +9,7 @@ import { FAQ_ON_SERVICES } from '../data/faq';
 
 const title = 'Послуги - розробка сайтів і чат-ботів для бізнесу | Анна Медвідь';
 const description =
-  'Конверсійні лендінги, багатосторінкові сайти з SEO, інтернет-магазини на no-code і Telegram-боти. Аналіз ніші, структура, тексти й підтримка після запуску. Передоплата 50%.';
+  'Конверсійні лендінги, багатосторінкові сайти з SEO, інтернет-магазини на no-code, Telegram-боти і технічний розбір сайту, який уже є. Аналіз ніші, структура, тексти й підтримка після запуску. Передоплата 50%.';
 
 const schema = SERVICES_FULL.map((service) => ({
   '@context': 'https://schema.org',
@@ -94,8 +94,8 @@ const schema = SERVICES_FULL.map((service) => ({
           ))
         }
 
-        <!-- Врізка живе всередині сітки: послуг п'ять, тож у останньому
-             ряду праворуч лишалась порожня комірка — вона її й займає -->
+        <!-- Послуг шість, сітка заповнена рівно, тож врізка йде окремим
+             рядом на всю ширину -->
         <div class="note reveal">
           <h3 class="note__title">Від чого залежить термін</h3>
           <p>
@@ -270,8 +270,7 @@ const schema = SERVICES_FULL.map((service) => ({
     border-inline-start: 2px solid var(--terracotta);
     padding-inline-start: 1.25rem;
     max-width: var(--line-max);
-    /* у сітці не тягнемо врізку на всю висоту сусідньої картки */
-    align-self: center;
+    grid-column: 1 / -1;
   }
 
   .note__title { font-size: 1.125rem; margin-bottom: 0.75rem; }
