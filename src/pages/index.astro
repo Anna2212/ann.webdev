@@ -147,7 +147,7 @@ const schema = [
       <div class="grid grid--2 stack-top reveal-group">
         {
           SERVICES.map((item) => (
-            <article class="card">
+            <article class:list={['card', { 'card--wide': 'wide' in item && item.wide }]}>
               <h3 class="mini__title">{item.title}</h3>
               <p class="text-soft mini__text">{item.text}</p>
             </article>
@@ -404,6 +404,12 @@ const schema = [
   .mini__text {
     margin-top: 0.625rem;
     font-size: var(--fs-small);
+  }
+
+  /* П'ята послуга займає весь ряд: чотири вище про новий сайт, ця про наявний */
+  @media (min-width: 768px) {
+    .card--wide { grid-column: 1 / -1; }
+    .card--wide .mini__text { max-width: var(--line-max); }
   }
 
   .center-actions {
