@@ -52,9 +52,10 @@ export const GA_ID = 'G-XG3C5ZG3BM';
 /**
  * Посилання на Telegram-бота, який віддає чекліст.
  * Поки порожнє — блок з лід-магнітом не рендериться взагалі.
- * Формат: https://t.me/назва_бота
+ * Формат: https://t.me/назва_бота?start=мітка — мітку бот бачить
+ * у команді /start і розуміє, звідки прийшла людина
  */
-export const BOT_URL = 'https://t.me/annwebdev_bot';
+export const BOT_URL = 'https://t.me/annwebdev_bot?start=site';
 
 /** Текст головної дії — однаковий скрізь, крім шапки */
 export const CTA = {
