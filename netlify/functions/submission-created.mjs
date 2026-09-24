@@ -24,6 +24,25 @@ const escapeHtml = (value = '') =>
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 
+const formatKyiv = (iso) => {
+  const date = iso ? new Date(iso) : new Date();
+  if (Number.isNaN(date.getTime())) return iso ?? '';
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat('uk-UA', {
+      timeZone: 'Europe/Kyiv',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    })
+      .formatToParts(date)
+      .map((p) => [p.type, p.value])
+  );
+  return `${parts.day}.${parts.month}.${parts.year} ${parts.hour}:${parts.minute}`;
+};
+
 export default async (request) => {
   let payload = {};
 
@@ -42,7 +61,9 @@ export default async (request) => {
   const zadacha = fields.zadacha ?? '';
   const storinka = fields.storinka ?? '';
   const dzherelo = fields.dzherelo ?? '';
-  const createdAt = payload.created_at ?? new Date().toISOString();
+  // Netlify віддає час у UTC в машинному форматі — у таблиці хочемо
+  // «24.09.2026 14:54» за Києвом
+  const createdAt = formatKyiv(payload.created_at);
 
   const results = [];
 
