@@ -1,0 +1,156 @@
+---
+/**
+ * Відгуки клієнтів. Один відгук — одна широка цитата; коли їх стане кілька,
+ * ті самі картки стануть у сітку по дві.
+ *
+ * Без відгуків не рендериться взагалі.
+ *
+ * items    — які відгуки показати (за замовчуванням усі)
+ * tone     — фон секції, щоб вписатись у чергування paper/cream сторінки
+ * withCase — показувати посилання на кейс під цитатою (на сторінці самого
+ *            кейса воно зайве)
+ */
+import { TESTIMONIALS, type Testimonial } from '../data/testimonials';
+import { CASES } from '../data/cases';
+
+interface Props {
+  items?: Testimonial[];
+  tone?: 'paper' | 'cream';
+  withCase?: boolean;
+  kicker?: string;
+  title?: string;
+}
+
+const {
+  items = TESTIMONIALS,
+  tone = 'cream',
+  withCase = true,
+  kicker = 'відгуки',
+  title = 'Що кажуть клієнти',
+} = Astro.props;
+
+const caseFor = (slug?: string) => CASES.find((c) => c.slug === slug);
+---
+
+{
+  items.length > 0 && (
+    <section class:list={['section', `section--${tone}`, 'testimonials']}>
+      <div class="container">
+        <p class="kicker kicker--line reveal">{kicker}</p>
+        <h2 class="reveal stack-sm h--quiet">{title}</h2>
+
+        <div class:list={['testimonials__list', 'stack-top', 'reveal-group', { 'testimonials__list--many': items.length > 1 }]}>
+          {items.map((t) => {
+            const item = caseFor(t.caseSlug);
+            return (
+              <figure class="testimonial">
+                <blockquote class="testimonial__quote">
+                  {t.quote.map((p) => (
+                    <p>{p}</p>
+                  ))}
+                </blockquote>
+                <figcaption class="testimonial__meta">
+                  <span class="testimonial__author">
+                    {t.author}, {t.company}
+                  </span>
+                  {withCase && item && (
+                    <a class="testimonial__case" href={`/keysy/${item.slug}`}>
+                      Дивитись кейс
+                    </a>
+                  )}
+                </figcaption>
+              </figure>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .testimonials__list {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .testimonial {
+    margin: 0;
+    position: relative;
+    max-width: 62ch;
+    padding: 2rem 1.5rem 1.75rem;
+    background: var(--paper);
+    border: 1px solid var(--cream-dark);
+    border-radius: var(--radius-card);
+  }
+
+  .section--paper .testimonial {
+    background: var(--cream);
+  }
+
+  /* Велика лапка в Playfair — той самий прийом, що акценти в заголовках */
+  .testimonial::before {
+    content: '“';
+    position: absolute;
+    inset-block-start: 0.25rem;
+    inset-inline-start: 1.25rem;
+    font-family: var(--font-display);
+    font-size: 4.5rem;
+    line-height: 1;
+    color: var(--terracotta);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .testimonial__quote {
+    margin: 0;
+    padding-block-start: 1.25rem;
+    line-height: 1.6;
+  }
+
+  .testimonial__quote p {
+    margin: 0;
+  }
+
+  .testimonial__quote p + p {
+    margin-block-start: 0.875rem;
+  }
+
+  .testimonial__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1.25rem;
+    margin-block-start: 1.5rem;
+    padding-block-start: 1.25rem;
+    border-block-start: 1px solid var(--cream-dark);
+    font-size: var(--fs-small);
+  }
+
+  .testimonial__author {
+    font-weight: 700;
+  }
+
+  .testimonial__case {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (min-width: 900px) {
+    .testimonial {
+      padding: 2.5rem 2.5rem 2rem;
+    }
+
+    .testimonial::before {
+      inset-inline-start: 2rem;
+    }
+
+    .testimonials__list--many {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .testimonials__list--many .testimonial {
+      max-width: none;
+    }
+  }
+</style>
