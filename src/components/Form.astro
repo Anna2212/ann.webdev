@@ -20,7 +20,9 @@ const {
   id = 'zayavka',
 } = Astro.props;
 
-const path = Astro.url.pathname;
+// Через build.format = 'file' шлях приходить як /index.html чи /faq.html,
+// а людина бачить / і /faq — тому нормалізуємо, щоб у заявці був звичний вигляд
+const path = Astro.url.pathname.replace(/index\.html$/, '').replace(/\.html$/, '') || '/';
 ---
 
 <section class="section section--wine" id={id}>
