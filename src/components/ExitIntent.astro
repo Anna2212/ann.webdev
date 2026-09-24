@@ -5,7 +5,8 @@
  * Свідомі обмеження:
  * — тільки десктоп: на мобільній «намір піти» технічно не визначається,
  *   а Google карає за нав'язливі перекриття на телефонах;
- * — тільки один раз на відвідувача, вибір запам'ятовується;
+ * — раз за візит: у кожен новий прихід на сайт покажеться знову, але
+ *   в межах одного візиту після закриття більше не турбує;
  * — не за таймером: сайт побудований на «я не тисну», і вікно, що
  *   вистрибує саме по собі, суперечило б цьому;
  * — пропонує чекліст, а не «залиште заявку»: людина вже йде, просити
@@ -72,6 +73,11 @@ import { BOT_URL } from '../data/site';
     background: rgb(36 28 22 / 0.55);
   }
 
+  /* Поки вікно відкрите, сторінка під ним не прокручується */
+  :global(body.is-exit-open) {
+    overflow: hidden;
+  }
+
   .exit__close {
     position: absolute;
     inset-block-start: 0.875rem;
@@ -120,7 +126,8 @@ import { BOT_URL } from '../data/site';
 
   if (modal && window.matchMedia('(min-width: 1024px)').matches) {
     const KEY = 'annwebdev-exit';
-    const shown = () => localStorage.getItem(KEY) === 'yes';
+    // sessionStorage живе до закриття вкладки — тому «раз за візит»
+    const shown = () => sessionStorage.getItem(KEY) === 'yes';
 
     const close = () => {
       if (modal.open) modal.close();
@@ -130,9 +137,15 @@ import { BOT_URL } from '../data/site';
       // не заважаємо банеру згоди і не показуємо двічі
       if (shown() || modal.open) return;
       if (document.body.classList.contains('has-consent')) return;
-      localStorage.setItem(KEY, 'yes');
+      sessionStorage.setItem(KEY, 'yes');
       modal.showModal();
+      document.body.classList.add('is-exit-open');
     };
+
+    // Спрацьовує на кнопку, клік по CTA і Escape — усі шляхи закриття
+    modal.addEventListener('close', () => {
+      document.body.classList.remove('is-exit-open');
+    });
 
     // Намір піти: курсор виходить за верхню межу вікна
     const onLeave = (event: MouseEvent) => {

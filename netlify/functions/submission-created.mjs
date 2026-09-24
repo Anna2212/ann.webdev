@@ -63,7 +63,7 @@ export default async (request) => {
       '',
       `<i>Сторінка: ${escapeHtml(storinka)}</i>`,
       `<i>Джерело: ${escapeHtml(dzherelo)}</i>`,
-    ].filter(Boolean);
+    ].filter((line) => line !== null);
 
     try {
       const tg = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {

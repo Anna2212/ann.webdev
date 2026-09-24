@@ -54,7 +54,7 @@ export const GA_ID = 'G-XG3C5ZG3BM';
  * Поки порожнє — блок з лід-магнітом не рендериться взагалі.
  * Формат: https://t.me/назва_бота
  */
-export const BOT_URL = '';
+export const BOT_URL = 'https://t.me/annwebdev_bot';
 
 /** Текст головної дії — однаковий скрізь, крім шапки */
 export const CTA = {
