@@ -4,11 +4,11 @@
  */
 
 /**
- * ТИМЧАСОВО: сайт закритий від пошукових систем, поки живе на технічному
- * домені Netlify. Коли підключиш annwebdev.com — постав true і прибери
- * блок [[headers]] з X-Robots-Tag у netlify.toml.
+ * Дозвіл на індексацію. Відкрито 26 вересня 2026 разом із доменом
+ * annwebdev.com. Якщо колись треба закрити сайт від пошуку — false тут
+ * і повернути блок [[headers]] з X-Robots-Tag у netlify.toml (обидва разом).
  */
-export const ALLOW_INDEXING = false;
+export const ALLOW_INDEXING = true;
 
 export const SITE = {
   url: 'https://annwebdev.com',
