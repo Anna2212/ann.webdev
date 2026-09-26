@@ -13,6 +13,17 @@ export interface Testimonial {
   /** Компанія, як у назві кейса */
   company: string;
   caseSlug?: string;
+  /**
+   * Скрін оригінального повідомлення (Telegram, пошта) — доказ, що відгук
+   * справжній. Файли в public/images: name.webp і name@2x.webp
+   */
+  screenshot?: {
+    name: string;
+    alt: string;
+    /** Розмір 1x-файлу, щоб місце під картинку резервувалось до завантаження */
+    width: number;
+    height: number;
+  };
 }
 
 export const TESTIMONIALS: Testimonial[] = [
@@ -25,6 +36,12 @@ export const TESTIMONIALS: Testimonial[] = [
     author: 'Клієнт',
     company: 'MPORTO',
     caseSlug: 'mporto',
+    screenshot: {
+      name: 'review-mporto',
+      alt: 'Скрін відгуку клієнта MPORTO в Telegram',
+      width: 340,
+      height: 402,
+    },
   },
 ];
 

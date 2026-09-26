@@ -1,7 +1,11 @@
 ---
 /**
- * Відгуки клієнтів. Один відгук — одна широка цитата; коли їх стане кілька,
- * ті самі картки стануть у сітку по дві.
+ * Відгуки клієнтів.
+ *
+ * Один відгук — широка картка на два стовпці: зліва скрін оригінального
+ * повідомлення (доказ, що відгук справжній), справа текст. Без скріна
+ * картка займає ту саму ширину, просто без лівого стовпця.
+ * Коли відгуків стане кілька, картки стануть одна під одною.
  *
  * Без відгуків не рендериться взагалі.
  *
@@ -39,26 +43,44 @@ const caseFor = (slug?: string) => CASES.find((c) => c.slug === slug);
         <p class="kicker kicker--line reveal">{kicker}</p>
         <h2 class="reveal stack-sm h--quiet">{title}</h2>
 
-        <div class:list={['testimonials__list', 'stack-top', 'reveal-group', { 'testimonials__list--many': items.length > 1 }]}>
+        <div class="testimonials__list stack-top reveal-group">
           {items.map((t) => {
             const item = caseFor(t.caseSlug);
+            const shot = t.screenshot;
             return (
-              <figure class="testimonial">
-                <blockquote class="testimonial__quote">
-                  {t.quote.map((p) => (
-                    <p>{p}</p>
-                  ))}
-                </blockquote>
-                <figcaption class="testimonial__meta">
-                  <span class="testimonial__author">
-                    {t.author}, {t.company}
-                  </span>
-                  {withCase && item && (
-                    <a class="testimonial__case" href={`/keysy/${item.slug}`}>
-                      Дивитись кейс
-                    </a>
-                  )}
-                </figcaption>
+              <figure class:list={['testimonial', { 'testimonial--with-shot': !!shot }]}>
+                {shot && (
+                  <div class="testimonial__shot">
+                    <img
+                      src={`/images/${shot.name}.webp`}
+                      srcset={`/images/${shot.name}.webp 1x, /images/${shot.name}@2x.webp 2x`}
+                      alt={shot.alt}
+                      width={shot.width}
+                      height={shot.height}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <p class="testimonial__shot-note text-soft">Оригінал повідомлення</p>
+                  </div>
+                )}
+
+                <div class="testimonial__body">
+                  <blockquote class="testimonial__quote">
+                    {t.quote.map((p) => (
+                      <p>{p}</p>
+                    ))}
+                  </blockquote>
+                  <figcaption class="testimonial__meta">
+                    <span class="testimonial__author">
+                      {t.author}, {t.company}
+                    </span>
+                    {withCase && item && (
+                      <a class="testimonial__case" href={`/keysy/${item.slug}`}>
+                        Дивитись кейс
+                      </a>
+                    )}
+                  </figcaption>
+                </div>
               </figure>
             );
           })}
@@ -76,9 +98,9 @@ const caseFor = (slug?: string) => CASES.find((c) => c.slug === slug);
 
   .testimonial {
     margin: 0;
-    position: relative;
-    max-width: 62ch;
-    padding: 2rem 1.5rem 1.75rem;
+    display: grid;
+    gap: 1.5rem;
+    padding: 1.5rem;
     background: var(--paper);
     border: 1px solid var(--cream-dark);
     border-radius: var(--radius-card);
@@ -88,12 +110,17 @@ const caseFor = (slug?: string) => CASES.find((c) => c.slug === slug);
     background: var(--cream);
   }
 
+  .testimonial__body {
+    position: relative;
+    padding-block-start: 2rem;
+  }
+
   /* Велика лапка в Playfair — той самий прийом, що акценти в заголовках */
-  .testimonial::before {
+  .testimonial__body::before {
     content: '“';
     position: absolute;
-    inset-block-start: 0.25rem;
-    inset-inline-start: 1.25rem;
+    inset-block-start: -0.75rem;
+    inset-inline-start: -0.25rem;
     font-family: var(--font-display);
     font-size: 4.5rem;
     line-height: 1;
@@ -104,7 +131,7 @@ const caseFor = (slug?: string) => CASES.find((c) => c.slug === slug);
 
   .testimonial__quote {
     margin: 0;
-    padding-block-start: 1.25rem;
+    max-width: 62ch;
     line-height: 1.6;
   }
 
@@ -136,21 +163,39 @@ const caseFor = (slug?: string) => CASES.find((c) => c.slug === slug);
     text-underline-offset: 3px;
   }
 
+  /* Скрін: як фото повідомлення на телефоні, з рамкою і легкою тінню */
+  .testimonial__shot {
+    max-width: 340px;
+  }
+
+  .testimonial__shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid var(--cream-dark);
+    box-shadow: 0 10px 30px rgb(36 28 22 / 0.12);
+    background: var(--cream-dark);
+  }
+
+  .testimonial__shot-note {
+    margin: 0.75rem 0 0;
+    font-size: 0.8125rem;
+  }
+
   @media (min-width: 900px) {
     .testimonial {
-      padding: 2.5rem 2.5rem 2rem;
+      padding: 2.5rem;
     }
 
-    .testimonial::before {
-      inset-inline-start: 2rem;
+    .testimonial--with-shot {
+      grid-template-columns: minmax(260px, 340px) 1fr;
+      gap: 3rem;
+      align-items: start;
     }
 
-    .testimonials__list--many {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .testimonials__list--many .testimonial {
-      max-width: none;
+    .testimonial__body {
+      padding-block-start: 2.25rem;
     }
   }
 </style>
