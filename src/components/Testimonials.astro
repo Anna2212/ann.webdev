@@ -41,9 +41,9 @@ const caseFor = (slug?: string) => CASES.find((c) => c.slug === slug);
     <section class:list={['section', `section--${tone}`, 'testimonials']}>
       <div class="container">
         <p class="kicker kicker--line reveal">{kicker}</p>
-        <h2 class="reveal stack-sm h--quiet">{title}</h2>
+        <h2 class="reveal h--quiet testimonials__title">{title}</h2>
 
-        <div class="testimonials__list stack-top reveal-group">
+        <div class="testimonials__list reveal-group">
           {items.map((t) => {
             const item = caseFor(t.caseSlug);
             const shot = t.screenshot;
@@ -91,9 +91,16 @@ const caseFor = (slug?: string) => CASES.find((c) => c.slug === slug);
 }
 
 <style>
+  /* Відступи заголовка і списку — свої, бо stack-sm / stack-top описані
+     в стилях сторінок і всередині компонента не діють */
+  .testimonials__title {
+    margin-block-start: 1rem;
+  }
+
   .testimonials__list {
     display: grid;
     gap: 1.5rem;
+    margin-block-start: 2.5rem;
   }
 
   .testimonial {
