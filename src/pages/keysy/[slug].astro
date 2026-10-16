@@ -219,11 +219,7 @@ const schema = [
               </div>
             ))}
           </div>
-          <p class="numbers-note">
-            Динаміка за даними Google Search Console за перші півтора місяця
-            після початку просування. Абсолютні цифри не публікую — це дані
-            клієнта.
-          </p>
+          {item.numbersNote && <p class="numbers-note">{item.numbersNote}</p>}
         </div>
       </section>
     )

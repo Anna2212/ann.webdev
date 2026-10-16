@@ -161,7 +161,13 @@ const schemaList = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
       }
 
       // --- Цифри в блоці довіри набігають один раз ---
-      const counters = document.querySelectorAll<HTMLElement>('[data-count]');
+      // У HTML одразу стоїть фінальне значення: його бачать пошук, прев'ю
+      // посилань і люди без JS. На нуль скидаємо лише в момент старту, коли
+      // цифра ще трохи нижче екрана, — тож нуль ніхто не бачить, а якщо блок
+      // проскочили стрибком, там так і лишається фінальне значення
+      const counters = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-count]')
+      ).filter((el) => el.getBoundingClientRect().top > window.innerHeight);
 
       if (counters.length && !calm) {
         const runCounter = (el: HTMLElement) => {
@@ -190,7 +196,7 @@ const schemaList = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
               }
             });
           },
-          { threshold: 0.6 }
+          { rootMargin: '0px 0px 80px 0px' }
         );
 
         counters.forEach((el) => counterObserver.observe(el));
