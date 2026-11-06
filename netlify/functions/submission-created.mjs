@@ -16,7 +16,12 @@
  *
  * Якщо змінних немає, функція просто нічого не робить і не падає:
  * заявка все одно лежить у Netlify, у розділі Forms.
+ *
+ * Функція спрацьовує вже після збереження, тож відхилити заявку не може.
+ * Заявку з некоректним контактом (обхід перевірки в браузері або без JS)
+ * вона не передає далі: запис лишається тільки в Forms.
  */
+import { checkContact } from '../../src/lib/contact.mjs';
 
 const escapeHtml = (value = '') =>
   String(value)
@@ -56,7 +61,14 @@ export default async (request) => {
   const fields = payload.data ?? {};
 
   const imya = fields.imya ?? '';
-  const kontakt = fields.kontakt ?? '';
+  const checked = checkContact(fields.kontakt);
+
+  if (!checked.ok) {
+    console.warn(`Некоректний контакт у заявці ${payload.id ?? ''}: не передаю далі`);
+    return new Response('kontakt:invalid', { status: 200 });
+  }
+
+  const kontakt = checked.value;
   const sayt = fields.sayt ?? '';
   const zadacha = fields.zadacha ?? '';
   const storinka = fields.storinka ?? '';

@@ -76,8 +76,9 @@ const path = Astro.url.pathname.replace(/index\.html$/, '').replace(/\.html$/, '
             name="kontakt"
             placeholder="+380 67 123 45 67 або @nickname"
             required
-            aria-describedby={`${id}-contact-hint`}
+            aria-describedby={`${id}-contact-error ${id}-contact-hint`}
           />
+          <p class="form__error form__error--field" id={`${id}-contact-error`} data-contact-error hidden></p>
           <!-- Без підказки люди лишали щось, за чим їх не знайти -->
           <p class="form__hint" id={`${id}-contact-hint`}>
             Номер телефону, @нік у Telegram чи Instagram або пошта — головне,
@@ -295,6 +296,10 @@ const path = Astro.url.pathname.replace(/index\.html$/, '').replace(/\.html$/, '
     color: #F0C9B4;
   }
 
+  .form__error--field {
+    margin: 0.5rem 0 0;
+  }
+
   .form__actions {
     display: flex;
     flex-wrap: wrap;
@@ -370,12 +375,16 @@ const path = Astro.url.pathname.replace(/index\.html$/, '').replace(/\.html$/, '
 </style>
 
 <script>
+  import { checkContact } from '../lib/contact.mjs';
+
   document.querySelectorAll<HTMLFormElement>('form[name="zayavka"]').forEach((form) => {
     const wrap = form.parentElement;
     const success = wrap?.querySelector<HTMLElement>('[data-form-success]');
     const errorBox = form.querySelector<HTMLElement>('[data-form-error]');
     const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]');
     const source = form.querySelector<HTMLInputElement>('input[name="dzherelo"]');
+    const contact = form.querySelector<HTMLInputElement>('input[name="kontakt"]');
+    const contactError = form.querySelector<HTMLElement>('[data-contact-error]');
 
     // Звідки прийшла людина — щоб потім бачити, які канали дають заявки
     if (source) source.value = document.referrer || 'напряму';
@@ -388,10 +397,18 @@ const path = Astro.url.pathname.replace(/index\.html$/, '').replace(/\.html$/, '
       errorBox.hidden = false;
     };
 
+    const clearContactError = () => {
+      if (contactError) contactError.hidden = true;
+      contact?.removeAttribute('aria-invalid');
+    };
+
+    contact?.addEventListener('input', clearContactError);
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
 
       if (errorBox) errorBox.hidden = true;
+      clearContactError();
       form
         .querySelectorAll('[aria-invalid]')
         .forEach((el) => el.removeAttribute('aria-invalid'));
@@ -407,6 +424,23 @@ const path = Astro.url.pathname.replace(/index\.html$/, '').replace(/\.html$/, '
         empty[0].focus();
         showError('Заповніть, будь ласка, підсвічені поля.');
         return;
+      }
+
+      // Куди відповісти: номер, @нік або пошта
+      if (contact) {
+        const checked = checkContact(contact.value);
+
+        if (!checked.ok) {
+          contact.setAttribute('aria-invalid', 'true');
+          contact.focus();
+          if (contactError) {
+            contactError.textContent = checked.error;
+            contactError.hidden = false;
+          }
+          return;
+        }
+
+        contact.value = checked.value;
       }
 
       // Захист від подвійної відправки
