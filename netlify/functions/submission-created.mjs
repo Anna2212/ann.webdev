@@ -17,9 +17,9 @@
  * Якщо змінних немає, функція просто нічого не робить і не падає:
  * заявка все одно лежить у Netlify, у розділі Forms.
  *
- * Функція спрацьовує вже після збереження, тож відхилити заявку не може.
- * Заявку з некоректним контактом (обхід перевірки в браузері або без JS)
- * вона не передає далі: запис лишається тільки в Forms.
+ * Заявка з некоректним контактом (обхід перевірки в браузері або без JS)
+ * теж іде далі, але з позначкою і причиною: краще побачити її і знайти
+ * людину самій, ніж не дізнатись про неї взагалі.
  */
 import { checkContact } from '../../src/lib/contact.mjs';
 
@@ -62,13 +62,8 @@ export default async (request) => {
 
   const imya = fields.imya ?? '';
   const checked = checkContact(fields.kontakt);
-
-  if (!checked.ok) {
-    console.warn(`Некоректний контакт у заявці ${payload.id ?? ''}: не передаю далі`);
-    return new Response('kontakt:invalid', { status: 200 });
-  }
-
-  const kontakt = checked.value;
+  const kontakt = checked.ok ? checked.value : (fields.kontakt ?? '');
+  const flag = checked.ok ? '' : `[ПЕРЕВІРИТИ КОНТАКТ] ${checked.reason}`;
   const sayt = fields.sayt ?? '';
   const zadacha = fields.zadacha ?? '';
   const storinka = fields.storinka ?? '';
@@ -85,6 +80,7 @@ export default async (request) => {
 
   if (token && chatId) {
     const lines = [
+      flag ? `<b>${escapeHtml(flag)}</b>` : null,
       '<b>Нова заявка з сайту</b>',
       '',
       `<b>Ім'я:</b> ${escapeHtml(imya)}`,
@@ -128,7 +124,8 @@ export default async (request) => {
         body: JSON.stringify({
           data: createdAt,
           imya,
-          kontakt,
+          // Окремої колонки для позначки в таблиці немає, тому вона в контакті
+          kontakt: flag ? `${flag}: ${kontakt}` : kontakt,
           sayt,
           zadacha,
           storinka,
