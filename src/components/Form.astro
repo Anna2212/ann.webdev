@@ -375,7 +375,7 @@ const path = Astro.url.pathname.replace(/index\.html$/, '').replace(/\.html$/, '
 </style>
 
 <script>
-  import { checkContact } from '../lib/contact.mjs';
+  import { checkContact, completeContact, formatPhoneInput } from '../lib/contact.mjs';
 
   document.querySelectorAll<HTMLFormElement>('form[name="zayavka"]').forEach((form) => {
     const wrap = form.parentElement;
@@ -402,7 +402,51 @@ const path = Astro.url.pathname.replace(/index\.html$/, '').replace(/\.html$/, '
       contact?.removeAttribute('aria-invalid');
     };
 
-    contact?.addEventListener('input', clearContactError);
+    const showContactError = (text: string) => {
+      contact?.setAttribute('aria-invalid', 'true');
+      if (contactError) {
+        contactError.textContent = text;
+        contactError.hidden = false;
+      }
+    };
+
+    // Перевіряє поле і показує або ховає помилку. Порожнє не чіпаємо:
+    // про нього скаже перевірка обов'язкових полів при відправці
+    const validateContact = () => {
+      if (!contact) return null;
+      if (!contact.value.trim()) {
+        clearContactError();
+        return null;
+      }
+      const checked = checkContact(completeContact(contact.value));
+      if (checked.ok) clearContactError();
+      else showContactError(checked.error);
+      return checked;
+    };
+
+    contact?.addEventListener('input', (event) => {
+      const { inputType } = event as InputEvent;
+
+      // Номер оформлюємо одразу, але тільки коли курсор у кінці і людина
+      // додає символи: інакше заважали б виправляти й стирати
+      const atEnd = contact.selectionStart === contact.value.length;
+      if (atEnd && inputType?.startsWith('insert')) {
+        const formatted = formatPhoneInput(contact.value, {
+          cap: inputType === 'insertText',
+        });
+        if (formatted !== contact.value) contact.value = formatted;
+      }
+
+      // Помилку, яка вже висить, знімаємо, щойно значення стало правильним
+      if (contactError && !contactError.hidden) validateContact();
+    });
+
+    // Вийшли з поля — доповнюємо нік собачкою і одразу кажемо, якщо щось не так
+    contact?.addEventListener('blur', () => {
+      const completed = completeContact(contact.value);
+      if (completed !== contact.value.trim()) contact.value = completed;
+      validateContact();
+    });
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -428,19 +472,15 @@ const path = Astro.url.pathname.replace(/index\.html$/, '').replace(/\.html$/, '
 
       // Куди відповісти: номер, @нік або пошта
       if (contact) {
-        const checked = checkContact(contact.value);
+        contact.value = completeContact(contact.value);
+        const checked = validateContact();
 
-        if (!checked.ok) {
-          contact.setAttribute('aria-invalid', 'true');
+        if (checked && !checked.ok) {
           contact.focus();
-          if (contactError) {
-            contactError.textContent = checked.error;
-            contactError.hidden = false;
-          }
           return;
         }
 
-        contact.value = checked.value;
+        if (checked) contact.value = checked.value;
       }
 
       // Захист від подвійної відправки
