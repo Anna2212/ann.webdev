@@ -14,7 +14,7 @@ import { CASES, FEATURED_CASES } from '../data/cases';
  * До цього він жив тільки на сторінці MPORTO, куди доходять одиниці.
  */
 const mporto = CASES.find((item) => item.slug === 'mporto');
-const proof = mporto?.numbers?.slice(0, 2) ?? [];
+const proof = mporto?.proof ?? [];
 
 const title = 'Анна Медвідь - конверсійні сайти й Telegram-боти для бізнесу';
 const description =
@@ -238,9 +238,8 @@ const schema = [
               ))}
             </div>
             <p class="proof__note text-soft">
-              Дані Google Search Console по кейсу <a href="/keysy/mporto">MPORTO</a>{' '}
-              за перші півтора місяця просування. Абсолютні цифри не публікую —
-              це дані клієнта.
+              Дані Google Search Console по кейсу <a href="/keysy/mporto">MPORTO</a>.
+              Абсолютні цифри не публікую - це дані клієнта.
             </p>
           </div>
         )
@@ -275,7 +274,7 @@ const schema = [
                 {
                   'count' in fact ? (
                     <span data-count={fact.count} data-suffix={fact.suffix}>
-                      0{fact.suffix}
+                      {fact.lead}
                     </span>
                   ) : (
                     fact.lead

@@ -43,6 +43,20 @@ export const TESTIMONIALS: Testimonial[] = [
       height: 402,
     },
   },
+  {
+    quote: [
+      'Сайт, який розробила Анна для вашого бізнесу, перевершив очікування. Ми в захваті від дизайну, та наші клієнти говорять, що одразу привертає увагу стиль. Все стильно та лаконічно. Швидка розробка та якісна робота. Рекомендуємо послуги Анни всім, хто цінить якість.',
+    ],
+    author: 'Клієнт',
+    company: 'Слідом Святих',
+    caseSlug: 'slidom-svyatyh',
+    screenshot: {
+      name: 'review-slidom',
+      alt: 'Відгук клієнта Слідом Святих у Telegram',
+      width: 332,
+      height: 184,
+    },
+  },
 ];
 
 export const getTestimonialForCase = (slug: string) =>
