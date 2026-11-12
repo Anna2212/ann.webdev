@@ -29,6 +29,10 @@ const escapeHtml = (value = '') =>
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 
+// Таблиця сприймає +380… як число: губить плюс, а довгий номер показує
+// як 3,8E+19. Апостроф на початку змушує записати текст, і його не видно
+const asText = (value) => (/^[+\d]/.test(value) ? `'${value}` : value);
+
 const formatKyiv = (iso) => {
   const date = iso ? new Date(iso) : new Date();
   if (Number.isNaN(date.getTime())) return iso ?? '';
@@ -125,7 +129,7 @@ export default async (request) => {
           data: createdAt,
           imya,
           // Окремої колонки для позначки в таблиці немає, тому вона в контакті
-          kontakt: flag ? `${flag}: ${kontakt}` : kontakt,
+          kontakt: asText(flag ? `${flag}: ${kontakt}` : kontakt),
           sayt,
           zadacha,
           storinka,
